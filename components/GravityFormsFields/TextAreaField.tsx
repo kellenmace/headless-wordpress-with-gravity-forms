@@ -1,28 +1,36 @@
+import { TextAreaField as TextAreaFieldType } from "../../generated/graphql";
+import useGravityForm, { ACTION_TYPES, StringFieldValue } from "../../hooks/useGravityForm";
+
 interface Props {
-  field: {
-    id: string;
-    formId: string;
-    type: string;
-    label: string;
-    isRequired: boolean;
-  };
-  value: string;
-  updateValue: (newValue: string) => void,
+  field: TextAreaFieldType;
 }
 
-export default function TextAreaField({ field, value, updateValue }: Props) {
+const DEFAULT_VALUE = '';
+
+export default function TextAreaField({ field }: Props) {
   const { id, formId, label, isRequired } = field;
   const htmlId = `field_${formId}_${id}`;
+  const { state, dispatch } = useGravityForm();
+  const fieldValue = state.find((fieldValue: StringFieldValue) => fieldValue.id === id);
+  const value = fieldValue?.value || DEFAULT_VALUE;
 
   return (
     <>
       <label htmlFor={htmlId}>{label}</label>
       <textarea
-        name={id}
+        name={String(id)}
         id={htmlId}
-        required={isRequired}
+        required={Boolean(isRequired)}
         value={value}
-        onChange={event => updateValue(event.target.value)}
+        onChange={event => {
+          dispatch({
+            type: ACTION_TYPES.updateTextAreaFieldValue,
+            fieldValue: {
+              id,
+              value: event.target.value,
+            },
+          })
+        }}
       />
     </>
   );

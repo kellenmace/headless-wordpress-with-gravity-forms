@@ -1,0 +1,7 @@
+overwrite: true
+schema: "http://wpgraphqlgravtyforms.local/graphql"
+generates:
+  generated/graphql.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"

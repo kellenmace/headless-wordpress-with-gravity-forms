@@ -1,42 +1,9 @@
 import { useMutation, gql } from "@apollo/client";
-import { useState } from "react";
+import { SyntheticEvent } from "react";
 
+import { GravityFormsForm as GravityFormsFormType, FormField } from "../generated/graphql";
+import useGravityForm from "../hooks/useGravityForm";
 import GravityFormsField from "./GravityFormsField";
-
-export const GET_FORM = gql`
-  query getForm($formId: ID!) {
-    gravityFormsForm(id: $formId, idType: DATABASE_ID) {
-      formId
-      button {
-        text
-      }
-      confirmations {
-        isDefault
-        message
-      }
-      fields(first: 100) {
-        nodes {
-          type
-          ... on TextField {
-            id
-            label
-            isRequired
-          }
-          ... on TextAreaField {
-            id
-            label
-            isRequired
-          }
-          ... on EmailField {
-            id
-            label
-            isRequired
-          }
-        }
-      }
-    }
-  }
-`;
 
 const SUBMIT_FORM = gql`
   mutation submitForm($formId: Int!, $fieldValues: [FieldValuesInput]) {
@@ -50,33 +17,26 @@ const SUBMIT_FORM = gql`
 `;
 
 interface Props {
-  form: any;
-  onSuccess?: () => void;
+  form: GravityFormsFormType;
 }
 
-export default function GravityFormsForm({ form, onSuccess }: Props) {
+export default function GravityFormsForm({ form }: Props) {
   const [submitForm, { data, loading, error }] = useMutation(SUBMIT_FORM);
   const wasSuccessfullySubmitted = Boolean(data?.submitGravityFormsForm);
-  const defaultConfirmation = form.confirmations.find(confirmation => confirmation?.isDefault)
-  const [fieldValues, setFieldValues] = useState([]);
-  console.table(fieldValues);
+  const defaultConfirmation = form.confirmations?.find(confirmation => confirmation?.isDefault);
+  const formFields = form.fields?.nodes || [];
+  const { state } = useGravityForm();
 
-  function handleSubmit(event) {
+  console.table(state);
+
+  function handleSubmit(event: SyntheticEvent) {
     event.preventDefault();
+    if (loading) return;
 
     submitForm({
       variables: {
         formId: form.formId,
-        fieldValues: [
-          {
-            id: 1,
-            value: "ONEEE",
-          },
-          {
-            id: 2,
-            emailValues: { value: "TWOOO@example.com" },
-          }
-        ],
+        fieldValues: state,
       }
     });
   }
@@ -87,14 +47,14 @@ export default function GravityFormsForm({ form, onSuccess }: Props) {
 
   return (
     <form method="post" onSubmit={handleSubmit}>
-      {form.fields.nodes.map((field: any) =>
-        <GravityFormsField key={field.id} field={field} fieldValues={fieldValues} setFieldValues={setFieldValues} />
+      {formFields.map(field =>
+        <GravityFormsField key={field?.id} field={field as FormField} />
       )}
       {error ? (
         <p style={{ color: 'red' }}>{error.message}</p>
       ) : null}
       <button type="submit" disabled={loading}>
-        {form.button.text}
+        {form?.button?.text || 'Submit'}
       </button>
     </form>
   );

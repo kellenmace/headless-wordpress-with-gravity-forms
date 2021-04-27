@@ -1,33 +1,20 @@
-import TextField from './GravityFormsFields/TextField';
-import TextAreaField from './GravityFormsFields/TextAreaField';
-import EmailField from './GravityFormsFields/EmailField';
+import { FormField } from "../generated/graphql";
+import EmailField from "./GravityFormsFields/EmailField";
+import TextField from "./GravityFormsFields/TextField";
+import TextAreaField from "./GravityFormsFields/TextAreaField";
 
 interface Props {
-  field: any;
-  fieldValues: Record<string, unknown>[];
-  setFieldValues: (newFieldValues: Record<string, unknown>[]) => void;
+  field: FormField;
 }
 
-export default function Field({ field, fieldValues, setFieldValues }: Props) {
+export default function Field({ field }: Props) {
   switch (field.type) {
-    case "text": {
-      const { id } = field;
-      const fieldValue = fieldValues.find(fieldValue => fieldValue.id === field.id);
-      const otherFieldValues = fieldValues.filter(fieldValue => fieldValue.id !== field.id);
-      const value = String(fieldValue?.value || '');
-      const updateValue = (newValue: string) => setFieldValues([...otherFieldValues, { id, value: newValue }]);
-      return <TextField field={field} value={value} updateValue={updateValue} />
-    }
-    // case "textarea": {
-    //   const value = String(fieldValues[field.id] || '');
-    //   const updateValue = (newValue: string) => setFieldValues({ ...fieldValues, [field.id]: newValue });
-    //   return <TextAreaField field={field} value={value} updateValue={updateValue} />
-    // }
-    // case "email": {
-    //   const value = String(fieldValues[field.id] || '');
-    //   const updateValue = (newValue: string) => setFieldValues({ ...fieldValues, [field.id]: newValue });
-    //   return <EmailField field={field} value={value} updateValue={updateValue} />
-    // }
+    case "email":
+      return <EmailField field={field} />;
+    case "text":
+      return <TextField field={field} />;
+    case "textarea":
+      return <TextAreaField field={field} />;
     default:
       return <p>{`Field type not supported: ${field.type}.`}</p>
   }

@@ -1,30 +1,23 @@
-import { GetStaticPropsContext } from "next";
-
-import { client } from "../services/apollo";
-import GravityFormsForm, { GET_FORM } from '../components/GravityFormsForm';
+import { GravityFormsForm } from "../generated/graphql";
+import getGravityForm from "../utilities/gravity-forms";
+import GravityForm from '../components/GravityForm';
 
 interface Props {
-  name: string;
-  form: any;
+  form: GravityFormsForm;
 }
 
 export default function Questionnaire({ form }: Props) {
   return (
     <>
       <h1>Questionnaire</h1>
-      <GravityFormsForm form={form} />
+      <p>Please let us know how we can help.</p>
+      <GravityForm form={form} />
     </>
   );
 }
 
-export async function getStaticProps(context: GetStaticPropsContext) {
-  const result = await client
-    .query({
-      query: GET_FORM,
-      variables: { formId: 1 },
-    });
-
-  const form = result?.data?.gravityFormsForm || null;
+export async function getStaticProps() {
+  const form = await getGravityForm(1);
 
   return {
     props: { form },
