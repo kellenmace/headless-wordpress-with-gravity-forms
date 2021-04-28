@@ -1,5 +1,16 @@
+import { gql } from "@apollo/client";
+
 import { TextAreaField as TextAreaFieldType } from "../../generated/graphql";
 import useGravityForm, { ACTION_TYPES, StringFieldValue } from "../../hooks/useGravityForm";
+
+export const TEXT_AREA_FIELD_FIELDS = gql`
+  fragment TextAreaFieldFields on TextAreaField {
+    id
+    formId
+    label
+    isRequired
+  }
+`;
 
 interface Props {
   field: TextAreaFieldType;

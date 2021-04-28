@@ -1,5 +1,16 @@
+import { gql } from "@apollo/client";
+
 import { EmailField as EmailFieldType } from "../../generated/graphql";
 import useGravityForm, { ACTION_TYPES, EmailFieldValue } from "../../hooks/useGravityForm";
+
+export const EMAIL_FIELD_FIELDS = gql`
+  fragment EmailFieldFields on EmailField {
+    id
+    formId
+    label
+    isRequired
+  }
+`;
 
 interface Props {
   field: EmailFieldType;
