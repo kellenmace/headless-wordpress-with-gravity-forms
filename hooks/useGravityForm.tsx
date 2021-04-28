@@ -23,6 +23,7 @@ interface Action {
 
 export enum ACTION_TYPES {
   updateEmailFieldValue = 'updateEmailFieldValue',
+  updateSelectFieldValue = 'updateSelectFieldValue',
   updateTextAreaFieldValue = 'updateTextAreaFieldValue',
   updateTextFieldValue = 'updateTextFieldValue',
 }
@@ -34,6 +35,7 @@ function reducer(state: FieldValueUnion[], action: Action) {
       const otherFieldValues = state.filter(fieldValue => fieldValue.id !== id);
       return [...otherFieldValues, { id, emailValues }];
     }
+    case ACTION_TYPES.updateSelectFieldValue:
     case ACTION_TYPES.updateTextAreaFieldValue:
     case ACTION_TYPES.updateTextFieldValue: {
       const { id, value } = action.fieldValue as StringFieldValue;
