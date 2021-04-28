@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 
 import { client } from "../services/apollo";
 import { EMAIL_FIELD_FIELDS } from "../components/GravityFormsFields/EmailField";
+import { MULTI_SELECT_FIELD_FIELDS } from "../components/GravityFormsFields/MultiSelectField";
 import { SELECT_FIELD_FIELDS } from "../components/GravityFormsFields/SelectField";
 import { TEXT_AREA_FIELD_FIELDS } from "../components/GravityFormsFields/TextAreaField";
 import { TEXT_FIELD_FIELDS } from "../components/GravityFormsFields/TextField";
@@ -19,9 +20,13 @@ const GET_FORM = gql`
       }
       fields(first: 500) {
         nodes {
+          id
           type
           ... on EmailField {
             ...EmailFieldFields
+          }
+          ... on MultiSelectField {
+            ...MultiSelectFieldFields
           }
           ... on SelectField {
             ...SelectFieldFields
@@ -37,6 +42,7 @@ const GET_FORM = gql`
     }
   }
   ${EMAIL_FIELD_FIELDS}
+  ${MULTI_SELECT_FIELD_FIELDS}
   ${SELECT_FIELD_FIELDS}
   ${TEXT_AREA_FIELD_FIELDS}
   ${TEXT_FIELD_FIELDS}

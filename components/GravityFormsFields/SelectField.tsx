@@ -27,7 +27,6 @@ export default function SelectField({ field }: Props) {
   const { state, dispatch } = useGravityForm();
   const fieldValue = state.find((fieldValue: StringFieldValue) => fieldValue.id === id);
   const value = fieldValue?.value || defaultValue;
-  console.log({ value });
 
   return (
     <>
@@ -48,7 +47,7 @@ export default function SelectField({ field }: Props) {
         }}
       >
         {choices?.map(choice =>
-          <option value={choice?.value || ''}>{choice?.text || ''}</option>
+          <option key={choice?.value || ''} value={choice?.value || ''}>{choice?.text || ''}</option>
         )}
       </select>
     </>

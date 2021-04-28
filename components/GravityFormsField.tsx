@@ -1,5 +1,6 @@
 import { FormField } from "../generated/graphql";
 import EmailField from "./GravityFormsFields/EmailField";
+import MultiSelectField from "./GravityFormsFields/MultiSelectField";
 import SelectField from "./GravityFormsFields/SelectField";
 import TextField from "./GravityFormsFields/TextField";
 import TextAreaField from "./GravityFormsFields/TextAreaField";
@@ -12,6 +13,8 @@ export default function Field({ field }: Props) {
   switch (field.type) {
     case "email":
       return <EmailField field={field} />;
+    case "multiselect":
+      return <MultiSelectField field={field} />;
     case "select":
       return <SelectField field={field} />;
     case "text":

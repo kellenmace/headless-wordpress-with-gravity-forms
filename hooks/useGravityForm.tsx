@@ -14,7 +14,11 @@ export interface StringFieldValue extends FieldValue {
   value: string;
 }
 
-export type FieldValueUnion = EmailFieldValue | StringFieldValue;
+export interface StringFieldValues extends FieldValue {
+  values: string[];
+}
+
+export type FieldValueUnion = EmailFieldValue | StringFieldValue | StringFieldValues;
 
 interface Action {
   type: ACTION_TYPES;
@@ -23,6 +27,7 @@ interface Action {
 
 export enum ACTION_TYPES {
   updateEmailFieldValue = 'updateEmailFieldValue',
+  updateMultiSelectFieldValue = 'updateMultiSelectFieldValue',
   updateSelectFieldValue = 'updateSelectFieldValue',
   updateTextAreaFieldValue = 'updateTextAreaFieldValue',
   updateTextFieldValue = 'updateTextFieldValue',
@@ -34,6 +39,11 @@ function reducer(state: FieldValueUnion[], action: Action) {
       const { id, emailValues } = action.fieldValue as EmailFieldValue;
       const otherFieldValues = state.filter(fieldValue => fieldValue.id !== id);
       return [...otherFieldValues, { id, emailValues }];
+    }
+    case ACTION_TYPES.updateMultiSelectFieldValue: {
+      const { id, values } = action.fieldValue as StringFieldValues;
+      const otherFieldValues = state.filter(fieldValue => fieldValue.id !== id);
+      return [...otherFieldValues, { id, values }];
     }
     case ACTION_TYPES.updateSelectFieldValue:
     case ACTION_TYPES.updateTextAreaFieldValue:
