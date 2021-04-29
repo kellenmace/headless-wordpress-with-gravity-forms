@@ -5,6 +5,7 @@ import MultiSelectField from "./GravityFormsFields/MultiSelectField";
 import SelectField from "./GravityFormsFields/SelectField";
 import TextField from "./GravityFormsFields/TextField";
 import TextAreaField from "./GravityFormsFields/TextAreaField";
+import WebsiteField from "./GravityFormsFields/WebsiteField";
 
 interface Props {
   field: FormField;
@@ -24,6 +25,8 @@ export default function Field({ field }: Props) {
       return <TextField field={field} />;
     case "textarea":
       return <TextAreaField field={field} />;
+    case "website":
+      return <WebsiteField field={field} />;
     default:
       return <p>{`Field type not supported: ${field.type}.`}</p>;
   }

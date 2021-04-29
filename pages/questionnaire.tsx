@@ -17,7 +17,7 @@ export default function Questionnaire({ form }: Props) {
 }
 
 export async function getStaticProps() {
-  const form = await getGravityForm(1);
+  const form = await getGravityForm(3);
 
   return {
     props: { form },
