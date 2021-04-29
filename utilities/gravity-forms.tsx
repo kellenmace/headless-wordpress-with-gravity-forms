@@ -8,6 +8,7 @@ import { MULTI_SELECT_FIELD_FIELDS } from "../components/GravityFormsFields/Mult
 import { SELECT_FIELD_FIELDS } from "../components/GravityFormsFields/SelectField";
 import { TEXT_AREA_FIELD_FIELDS } from "../components/GravityFormsFields/TextAreaField";
 import { TEXT_FIELD_FIELDS } from "../components/GravityFormsFields/TextField";
+import { TIME_FIELD_FIELDS } from "../components/GravityFormsFields/TimeField";
 import { WEBSITE_FIELD_FIELDS } from "../components/GravityFormsFields/WebsiteField";
 
 const GET_FORM = gql`
@@ -46,6 +47,9 @@ const GET_FORM = gql`
           ... on TextAreaField {
             ...TextAreaFieldFields
           }
+          ... on TimeField {
+            ...TimeFieldFields
+          }
           ... on WebsiteField {
             ...WebsiteFieldFields
           }
@@ -60,6 +64,7 @@ const GET_FORM = gql`
   ${SELECT_FIELD_FIELDS}
   ${TEXT_AREA_FIELD_FIELDS}
   ${TEXT_FIELD_FIELDS}
+  ${TIME_FIELD_FIELDS}
   ${WEBSITE_FIELD_FIELDS}
 `;
 

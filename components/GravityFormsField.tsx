@@ -6,6 +6,7 @@ import MultiSelectField from "./GravityFormsFields/MultiSelectField";
 import SelectField from "./GravityFormsFields/SelectField";
 import TextField from "./GravityFormsFields/TextField";
 import TextAreaField from "./GravityFormsFields/TextAreaField";
+import TimeField from "./GravityFormsFields/TimeField";
 import WebsiteField from "./GravityFormsFields/WebsiteField";
 
 interface Props {
@@ -28,6 +29,8 @@ export default function Field({ field }: Props) {
       return <TextField field={field} />;
     case "textarea":
       return <TextAreaField field={field} />;
+    case "time":
+      return <TimeField field={field} />;
     case "website":
       return <WebsiteField field={field} />;
     default:
