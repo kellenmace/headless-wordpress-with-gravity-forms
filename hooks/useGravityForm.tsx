@@ -40,6 +40,7 @@ export enum ACTION_TYPES {
   updateEmailFieldValue = 'updateEmailFieldValue',
   updateMultiSelectFieldValue = 'updateMultiSelectFieldValue',
   updatePhoneFieldValue = 'updatePhoneFieldValue',
+  updateRadioFieldValue = 'updateRadioFieldValue',
   updateSelectFieldValue = 'updateSelectFieldValue',
   updateTextAreaFieldValue = 'updateTextAreaFieldValue',
   updateTextFieldValue = 'updateTextFieldValue',
@@ -64,6 +65,7 @@ function reducer(state: FieldValueUnion[], action: Action) {
       return [...getOtherFieldValues(id), { id, values }];
     }
     case ACTION_TYPES.updateDateFieldValue:
+    case ACTION_TYPES.updateRadioFieldValue:
     case ACTION_TYPES.updateSelectFieldValue:
     case ACTION_TYPES.updateTextAreaFieldValue:
     case ACTION_TYPES.updateTextFieldValue:

@@ -6,6 +6,7 @@ import { DATE_FIELD_FIELDS } from "../components/GravityFormsFields/DateField";
 import { EMAIL_FIELD_FIELDS } from "../components/GravityFormsFields/EmailField";
 import { MULTI_SELECT_FIELD_FIELDS } from "../components/GravityFormsFields/MultiSelectField";
 import { PHONE_FIELD_FIELDS } from "../components/GravityFormsFields/PhoneField";
+import { RADIO_FIELD_FIELDS } from "../components/GravityFormsFields/RadioField";
 import { SELECT_FIELD_FIELDS } from "../components/GravityFormsFields/SelectField";
 import { TEXT_AREA_FIELD_FIELDS } from "../components/GravityFormsFields/TextAreaField";
 import { TEXT_FIELD_FIELDS } from "../components/GravityFormsFields/TextField";
@@ -42,6 +43,9 @@ const GET_FORM = gql`
           ... on PhoneField {
             ...PhoneFieldFields
           }
+          ... on RadioField {
+            ...RadioFieldFields
+          }
           ... on SelectField {
             ...SelectFieldFields
           }
@@ -66,6 +70,7 @@ const GET_FORM = gql`
   ${EMAIL_FIELD_FIELDS}
   ${MULTI_SELECT_FIELD_FIELDS}
   ${PHONE_FIELD_FIELDS}
+  ${RADIO_FIELD_FIELDS}
   ${SELECT_FIELD_FIELDS}
   ${TEXT_AREA_FIELD_FIELDS}
   ${TEXT_FIELD_FIELDS}
