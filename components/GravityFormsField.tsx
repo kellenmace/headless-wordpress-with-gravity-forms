@@ -1,4 +1,5 @@
 import { FormField } from "../generated/graphql";
+import CheckboxField from "./GravityFormsFields/CheckboxField";
 import EmailField from "./GravityFormsFields/EmailField";
 import MultiSelectField from "./GravityFormsFields/MultiSelectField";
 import SelectField from "./GravityFormsFields/SelectField";
@@ -11,6 +12,8 @@ interface Props {
 
 export default function Field({ field }: Props) {
   switch (field.type) {
+    case "checkbox":
+      return <CheckboxField field={field} />;
     case "email":
       return <EmailField field={field} />;
     case "multiselect":
@@ -22,6 +25,6 @@ export default function Field({ field }: Props) {
     case "textarea":
       return <TextAreaField field={field} />;
     default:
-      return <p>{`Field type not supported: ${field.type}.`}</p>
+      return <p>{`Field type not supported: ${field.type}.`}</p>;
   }
 }

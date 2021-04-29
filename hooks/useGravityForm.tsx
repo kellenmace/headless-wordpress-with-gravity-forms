@@ -4,6 +4,15 @@ interface FieldValue {
   id: number;
 }
 
+export type SingleCheckboxValue = {
+  inputId: number,
+  value: string,
+}
+
+export interface CheckboxFieldValue extends FieldValue {
+  checkboxValues: SingleCheckboxValue[];
+}
+
 export interface EmailFieldValue extends FieldValue {
   emailValues: {
     value: string;
@@ -18,7 +27,7 @@ export interface StringFieldValues extends FieldValue {
   values: string[];
 }
 
-export type FieldValueUnion = EmailFieldValue | StringFieldValue | StringFieldValues;
+export type FieldValueUnion = CheckboxFieldValue | EmailFieldValue | StringFieldValue | StringFieldValues;
 
 interface Action {
   type: ACTION_TYPES;
@@ -26,6 +35,7 @@ interface Action {
 }
 
 export enum ACTION_TYPES {
+  updateCheckboxFieldValue = 'updateCheckboxFieldValue',
   updateEmailFieldValue = 'updateEmailFieldValue',
   updateMultiSelectFieldValue = 'updateMultiSelectFieldValue',
   updateSelectFieldValue = 'updateSelectFieldValue',
@@ -34,23 +44,26 @@ export enum ACTION_TYPES {
 }
 
 function reducer(state: FieldValueUnion[], action: Action) {
+  const getOtherFieldValues = (id: number) => state.filter(fieldValue => fieldValue.id !== id);
+
   switch (action.type) {
+    case ACTION_TYPES.updateCheckboxFieldValue: {
+      const { id, checkboxValues } = action.fieldValue as CheckboxFieldValue;
+      return [...getOtherFieldValues(id), { id, checkboxValues }];
+    }
     case ACTION_TYPES.updateEmailFieldValue: {
       const { id, emailValues } = action.fieldValue as EmailFieldValue;
-      const otherFieldValues = state.filter(fieldValue => fieldValue.id !== id);
-      return [...otherFieldValues, { id, emailValues }];
+      return [...getOtherFieldValues(id), { id, emailValues }];
     }
     case ACTION_TYPES.updateMultiSelectFieldValue: {
       const { id, values } = action.fieldValue as StringFieldValues;
-      const otherFieldValues = state.filter(fieldValue => fieldValue.id !== id);
-      return [...otherFieldValues, { id, values }];
+      return [...getOtherFieldValues(id), { id, values }];
     }
     case ACTION_TYPES.updateSelectFieldValue:
     case ACTION_TYPES.updateTextAreaFieldValue:
     case ACTION_TYPES.updateTextFieldValue: {
       const { id, value } = action.fieldValue as StringFieldValue;
-      const otherFieldValues = state.filter(fieldValue => fieldValue.id !== id);
-      return [...otherFieldValues, { id, value }];
+      return [...getOtherFieldValues(id), { id, value }];
     }
     default:
       throw new Error(`Field value update operation not supported: ${action.type}.`);
