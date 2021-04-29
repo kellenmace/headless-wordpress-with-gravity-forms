@@ -36,6 +36,7 @@ interface Action {
 
 export enum ACTION_TYPES {
   updateCheckboxFieldValue = 'updateCheckboxFieldValue',
+  updateDateFieldValue = 'updateDateFieldValue',
   updateEmailFieldValue = 'updateEmailFieldValue',
   updateMultiSelectFieldValue = 'updateMultiSelectFieldValue',
   updateSelectFieldValue = 'updateSelectFieldValue',
@@ -60,6 +61,7 @@ function reducer(state: FieldValueUnion[], action: Action) {
       const { id, values } = action.fieldValue as StringFieldValues;
       return [...getOtherFieldValues(id), { id, values }];
     }
+    case ACTION_TYPES.updateDateFieldValue:
     case ACTION_TYPES.updateSelectFieldValue:
     case ACTION_TYPES.updateTextAreaFieldValue:
     case ACTION_TYPES.updateTextFieldValue:

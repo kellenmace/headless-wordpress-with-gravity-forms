@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 
 import { client } from "../services/apollo";
 import { CHECKBOX_FIELD_FIELDS } from "../components/GravityFormsFields/CheckboxField";
+import { DATE_FIELD_FIELDS } from "../components/GravityFormsFields/DateField";
 import { EMAIL_FIELD_FIELDS } from "../components/GravityFormsFields/EmailField";
 import { MULTI_SELECT_FIELD_FIELDS } from "../components/GravityFormsFields/MultiSelectField";
 import { SELECT_FIELD_FIELDS } from "../components/GravityFormsFields/SelectField";
@@ -27,6 +28,9 @@ const GET_FORM = gql`
           ... on CheckboxField {
             ...CheckboxFieldFields
           }
+          ... on DateField {
+            ...DateFieldFields
+          }
           ... on EmailField {
             ...EmailFieldFields
           }
@@ -50,6 +54,7 @@ const GET_FORM = gql`
     }
   }
   ${CHECKBOX_FIELD_FIELDS}
+  ${DATE_FIELD_FIELDS}
   ${EMAIL_FIELD_FIELDS}
   ${MULTI_SELECT_FIELD_FIELDS}
   ${SELECT_FIELD_FIELDS}
