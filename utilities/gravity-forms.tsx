@@ -5,6 +5,7 @@ import { CHECKBOX_FIELD_FIELDS } from "../components/GravityFormsFields/Checkbox
 import { DATE_FIELD_FIELDS } from "../components/GravityFormsFields/DateField";
 import { EMAIL_FIELD_FIELDS } from "../components/GravityFormsFields/EmailField";
 import { MULTI_SELECT_FIELD_FIELDS } from "../components/GravityFormsFields/MultiSelectField";
+import { PHONE_FIELD_FIELDS } from "../components/GravityFormsFields/PhoneField";
 import { SELECT_FIELD_FIELDS } from "../components/GravityFormsFields/SelectField";
 import { TEXT_AREA_FIELD_FIELDS } from "../components/GravityFormsFields/TextAreaField";
 import { TEXT_FIELD_FIELDS } from "../components/GravityFormsFields/TextField";
@@ -38,6 +39,9 @@ const GET_FORM = gql`
           ... on MultiSelectField {
             ...MultiSelectFieldFields
           }
+          ... on PhoneField {
+            ...PhoneFieldFields
+          }
           ... on SelectField {
             ...SelectFieldFields
           }
@@ -61,6 +65,7 @@ const GET_FORM = gql`
   ${DATE_FIELD_FIELDS}
   ${EMAIL_FIELD_FIELDS}
   ${MULTI_SELECT_FIELD_FIELDS}
+  ${PHONE_FIELD_FIELDS}
   ${SELECT_FIELD_FIELDS}
   ${TEXT_AREA_FIELD_FIELDS}
   ${TEXT_FIELD_FIELDS}
