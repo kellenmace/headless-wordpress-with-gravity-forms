@@ -1,4 +1,3 @@
-import { SyntheticEvent } from "react";
 import { gql } from "@apollo/client";
 
 import { CheckboxField as CheckboxFieldType } from "../../generated/graphql";
@@ -33,7 +32,7 @@ export default function CheckboxField({ field }: Props) {
   const fieldValue = state.find((fieldValue: CheckboxFieldValue) => fieldValue.id === id);
   const checkboxValues = fieldValue?.checkboxValues || DEFAULT_VALUE;
 
-  function handleChange(event: SyntheticEvent) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value, checked } = event.target;
     const otherCheckboxValues = checkboxValues.filter(
       (checkboxValue: SingleCheckboxValue) => checkboxValue.inputId !== Number(name)
@@ -60,11 +59,11 @@ export default function CheckboxField({ field }: Props) {
           <input
             type="checkbox"
             name={String(inputId)}
-            id={`choice_${formId}_${id}_${inputId}`}
+            id={`input_${formId}_${id}_${inputId}`}
             value={String(value)}
             onChange={handleChange}
           />
-          <label htmlFor={`choice_${formId}_${id}_${inputId}`}>{text}</label>
+          <label htmlFor={`input_${formId}_${id}_${inputId}`}>{text}</label>
         </div>
       )}
     </fieldset>

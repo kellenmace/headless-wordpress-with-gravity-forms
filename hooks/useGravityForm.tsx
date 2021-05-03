@@ -4,10 +4,23 @@ interface FieldValue {
   id: number;
 }
 
-export type SingleCheckboxValue = {
-  inputId: number,
-  value: string,
+export type AddressValues = {
+  street?: string;
+  lineTwo?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  country?: string;
+};
+
+export interface AddressFieldValue extends FieldValue {
+  addressValues: AddressValues;
 }
+
+export type SingleCheckboxValue = {
+  inputId: number;
+  value: string;
+};
 
 export interface CheckboxFieldValue extends FieldValue {
   checkboxValues: SingleCheckboxValue[];
@@ -24,8 +37,8 @@ export type NameValues = {
   first?: string;
   middle?: string;
   last?: string;
-  suffix?: string
-}
+  suffix?: string;
+};
 
 export interface NameFieldValue extends FieldValue {
   nameValues: NameValues;
@@ -39,7 +52,7 @@ export interface StringFieldValues extends FieldValue {
   values: string[];
 }
 
-export type FieldValueUnion = CheckboxFieldValue | EmailFieldValue | NameFieldValue | StringFieldValue | StringFieldValues;
+export type FieldValueUnion = AddressFieldValue | CheckboxFieldValue | EmailFieldValue | NameFieldValue | StringFieldValue | StringFieldValues;
 
 interface Action {
   type: ACTION_TYPES;
@@ -47,6 +60,7 @@ interface Action {
 }
 
 export enum ACTION_TYPES {
+  updateAddressFieldValue = 'updateAddressFieldValue',
   updateCheckboxFieldValue = 'updateCheckboxFieldValue',
   updateDateFieldValue = 'updateDateFieldValue',
   updateEmailFieldValue = 'updateEmailFieldValue',
@@ -65,6 +79,10 @@ function reducer(state: FieldValueUnion[], action: Action) {
   const getOtherFieldValues = (id: number) => state.filter(fieldValue => fieldValue.id !== id);
 
   switch (action.type) {
+    case ACTION_TYPES.updateAddressFieldValue: {
+      const { id, addressValues } = action.fieldValue as AddressFieldValue;
+      return [...getOtherFieldValues(id), { id, addressValues }];
+    }
     case ACTION_TYPES.updateCheckboxFieldValue: {
       const { id, checkboxValues } = action.fieldValue as CheckboxFieldValue;
       return [...getOtherFieldValues(id), { id, checkboxValues }];
@@ -82,12 +100,12 @@ function reducer(state: FieldValueUnion[], action: Action) {
       return [...getOtherFieldValues(id), { id, nameValues }];
     }
     case ACTION_TYPES.updateDateFieldValue:
+    case ACTION_TYPES.updatePhoneFieldValue:
     case ACTION_TYPES.updateRadioFieldValue:
     case ACTION_TYPES.updateSelectFieldValue:
     case ACTION_TYPES.updateTextAreaFieldValue:
     case ACTION_TYPES.updateTextFieldValue:
     case ACTION_TYPES.updateTimeFieldValue:
-    case ACTION_TYPES.updatePhoneFieldValue:
     case ACTION_TYPES.updateWebsiteFieldValue: {
       const { id, value } = action.fieldValue as StringFieldValue;
       return [...getOtherFieldValues(id), { id, value }];

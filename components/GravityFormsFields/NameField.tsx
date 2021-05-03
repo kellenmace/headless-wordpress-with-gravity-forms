@@ -8,7 +8,6 @@ export const NAME_FIELD_FIELDS = gql`
     id
     formId
     label
-    isRequired
     inputs {
       key
       label
@@ -23,7 +22,7 @@ interface Props {
 const DEFAULT_VALUE: NameValues = {};
 
 export default function NameField({ field }: Props) {
-  const { id, formId, label, isRequired, inputs } = field;
+  const { id, formId, label, inputs } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
   const fieldValue = state.find((fieldValue: NameFieldValue) => fieldValue.id === id);
@@ -65,7 +64,7 @@ export default function NameField({ field }: Props) {
         <>
           <select
             name={String(prefixInput.key)}
-            id={`choice_${formId}_${id}_${prefixInput.key}`}
+            id={`input_${formId}_${id}_${prefixInput.key}`}
             value={nameValues?.[String(prefixInput.key)] || ''}
             onChange={handleSelectChange}
           >
@@ -79,7 +78,7 @@ export default function NameField({ field }: Props) {
             <option value="Prof.">Prof.</option>
             <option value="Rev.">Rev.</option>
           </select>
-          <label htmlFor={`choice_${formId}_${id}_${prefixInput.key}`}>{prefixInput.label}</label>
+          <label htmlFor={`input_${formId}_${id}_${prefixInput.key}`}>{prefixInput.label}</label>
         </> : null
       }
       {otherInputs.map(input => {
@@ -90,11 +89,11 @@ export default function NameField({ field }: Props) {
             <input
               type="text"
               name={String(key)}
-              id={`choice_${formId}_${id}_${key}`}
+              id={`input_${formId}_${id}_${key}`}
               value={nameValues?.[key] || ''}
               onChange={handleTextInputChange}
             />
-            <label htmlFor={`choice_${formId}_${id}_${key}`}>{inputLabel}</label>
+            <label htmlFor={`input_${formId}_${id}_${key}`}>{inputLabel}</label>
           </div>
         );
       }

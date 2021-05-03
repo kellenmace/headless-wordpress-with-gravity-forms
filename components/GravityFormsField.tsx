@@ -1,4 +1,5 @@
 import { FormField } from "../generated/graphql";
+import AddressField from "./GravityFormsFields/AddressField";
 import CheckboxField from "./GravityFormsFields/CheckboxField";
 import DateField from "./GravityFormsFields/DateField";
 import EmailField from "./GravityFormsFields/EmailField";
@@ -18,6 +19,8 @@ interface Props {
 
 export default function Field({ field }: Props) {
   switch (field.type) {
+    case "address":
+      return <AddressField field={field} />;
     case "checkbox":
       return <CheckboxField field={field} />;
     case "date":

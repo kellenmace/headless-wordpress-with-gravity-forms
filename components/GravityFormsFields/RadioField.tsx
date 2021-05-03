@@ -1,4 +1,3 @@
-import { SyntheticEvent } from "react";
 import { gql } from "@apollo/client";
 
 import { RadioField as RadioFieldType } from "../../generated/graphql";
@@ -29,8 +28,7 @@ export default function RadioField({ field }: Props) {
   const fieldValue = state.find((fieldValue: StringFieldValue) => fieldValue.id === id);
   const value = fieldValue?.value || DEFAULT_VALUE;
 
-  function handleChange(event: SyntheticEvent) {
-    console.log('handleChange() called');
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     dispatch({
       type: ACTION_TYPES.updateRadioFieldValue,
       fieldValue: {
