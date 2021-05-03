@@ -31,20 +31,7 @@ export default function NameField({ field }: Props) {
   const prefixInput = inputs?.find(input => input?.key === 'prefix');
   const otherInputs = inputs?.filter(input => input?.key !== 'prefix') || [];
 
-  function handleSelectChange(event: React.ChangeEvent<HTMLSelectElement>): void {
-    const { name, value } = event.target;
-    const newNameValues = { ...nameValues, [name]: value };
-
-    dispatch({
-      type: ACTION_TYPES.updateNameFieldValue,
-      fieldValue: {
-        id,
-        nameValues: newNameValues,
-      },
-    });
-  }
-
-  function handleTextInputChange(event: React.ChangeEvent<HTMLInputElement>): void {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     const { name, value } = event.target;
     const newNameValues = { ...nameValues, [name]: value };
 
@@ -66,7 +53,7 @@ export default function NameField({ field }: Props) {
             name={String(prefixInput.key)}
             id={`input_${formId}_${id}_${prefixInput.key}`}
             value={nameValues?.[String(prefixInput.key)] || ''}
-            onChange={handleSelectChange}
+            onChange={handleChange}
           >
             {/* TODO: Query for these when they're added to the GraphQL schema: https://github.com/harness-software/wp-graphql-gravity-forms/issues/101 */}
             <option value=""></option>
@@ -91,7 +78,7 @@ export default function NameField({ field }: Props) {
               name={String(key)}
               id={`input_${formId}_${id}_${key}`}
               value={nameValues?.[key] || ''}
-              onChange={handleTextInputChange}
+              onChange={handleChange}
             />
             <label htmlFor={`input_${formId}_${id}_${key}`}>{inputLabel}</label>
           </div>
