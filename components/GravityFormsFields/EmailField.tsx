@@ -9,6 +9,7 @@ export const EMAIL_FIELD_FIELDS = gql`
     formId
     label
     isRequired
+    placeholder
   }
 `;
 
@@ -19,7 +20,7 @@ interface Props {
 const DEFAULT_VALUE = '';
 
 export default function EmailField({ field }: Props) {
-  const { id, formId, label, isRequired } = field;
+  const { id, formId, label, isRequired, placeholder } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
   const fieldValue = state.find((fieldValue: EmailFieldValue) => fieldValue.id === id);
@@ -32,6 +33,7 @@ export default function EmailField({ field }: Props) {
         type="email"
         name={String(id)}
         id={htmlId}
+        placeholder={placeholder || ''}
         required={Boolean(isRequired)}
         value={value}
         onChange={event => {

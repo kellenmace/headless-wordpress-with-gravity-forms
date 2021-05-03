@@ -12,6 +12,7 @@ export const ADDRESS_FIELD_FIELDS = gql`
     inputs {
       key
       label
+      placeholder
     }
   }
 `;
@@ -56,12 +57,14 @@ export default function AddressField({ field }: Props) {
       {inputs?.map(input => {
         const key = input?.key || '';
         const inputLabel = input?.label || '';
+        const placeholder = input?.placeholder || '';
         return (
           <div key={key}>
             <input
               type="text"
               name={String(key)}
               id={`input_${formId}_${id}_${key}`}
+              placeholder={placeholder}
               autoComplete={AUTOCOMPLETE_ATTRIBUTES[key]}
               value={addressValues?.[key] || ''}
               onChange={handleChange}

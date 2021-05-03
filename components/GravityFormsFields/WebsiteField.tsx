@@ -9,6 +9,7 @@ export const WEBSITE_FIELD_FIELDS = gql`
     formId
     label
     isRequired
+    placeholder
   }
 `;
 
@@ -19,7 +20,7 @@ interface Props {
 const DEFAULT_VALUE = '';
 
 export default function WebsiteField({ field }: Props) {
-  const { id, formId, label, isRequired } = field;
+  const { id, formId, label, isRequired, placeholder } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
   const fieldValue = state.find((fieldValue: StringFieldValue) => fieldValue.id === id);
@@ -33,6 +34,7 @@ export default function WebsiteField({ field }: Props) {
         name={String(id)}
         id={htmlId}
         required={Boolean(isRequired)}
+        placeholder={placeholder || ''}
         value={value}
         onChange={event => {
           dispatch({

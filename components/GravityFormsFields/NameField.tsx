@@ -11,6 +11,7 @@ export const NAME_FIELD_FIELDS = gql`
     inputs {
       key
       label
+      placeholder
     }
   }
 `;
@@ -20,6 +21,14 @@ interface Props {
 }
 
 const DEFAULT_VALUE: NameValues = {};
+
+const AUTOCOMPLETE_ATTRIBUTES: { [key: string]: string } = {
+  prefix: 'honorific-prefix',
+  first: 'given-name',
+  middle: 'additional-name',
+  last: 'family-name',
+  suffix: 'honorific-suffix',
+};
 
 export default function NameField({ field }: Props) {
   const { id, formId, label, inputs } = field;
@@ -52,6 +61,7 @@ export default function NameField({ field }: Props) {
           <select
             name={String(prefixInput.key)}
             id={`input_${formId}_${id}_${prefixInput.key}`}
+            autoComplete={AUTOCOMPLETE_ATTRIBUTES.prefix}
             value={nameValues?.[String(prefixInput.key)] || ''}
             onChange={handleChange}
           >
@@ -71,12 +81,15 @@ export default function NameField({ field }: Props) {
       {otherInputs.map(input => {
         const key = input?.key || '';
         const inputLabel = input?.label || '';
+        const placeholder = input?.placeholder || '';
         return (
           <div key={key}>
             <input
               type="text"
               name={String(key)}
               id={`input_${formId}_${id}_${key}`}
+              placeholder={placeholder}
+              autoComplete={AUTOCOMPLETE_ATTRIBUTES[key]}
               value={nameValues?.[key] || ''}
               onChange={handleChange}
             />
