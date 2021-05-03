@@ -10,6 +10,7 @@ export const MULTI_SELECT_FIELD_FIELDS = gql`
     formId
     label
     isRequired
+    cssClass
     choices {
       text
       value
@@ -29,7 +30,7 @@ interface Option {
 const DEFAULT_VALUE: string[] = [];
 
 export default function MultiSelectField({ field }: Props) {
-  const { id, formId, label, isRequired, choices } = field;
+  const { id, formId, type, label, isRequired, cssClass, choices } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
   const fieldValue = state.find((fieldValue: StringFieldValues) => fieldValue.id === id);
@@ -46,7 +47,7 @@ export default function MultiSelectField({ field }: Props) {
   }
 
   return (
-    <>
+    <div className={`gfield gfield-${type} ${cssClass}`.trim()}>
       <label htmlFor={htmlId}>{label}</label>
       <Select
         isMulti
@@ -57,6 +58,6 @@ export default function MultiSelectField({ field }: Props) {
         value={selectedOptions}
         onChange={handleChange}
       />
-    </>
+    </div>
   );
 }

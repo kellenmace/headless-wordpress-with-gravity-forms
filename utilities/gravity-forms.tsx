@@ -19,6 +19,8 @@ const GET_FORM = gql`
   query getForm($formId: ID!) {
     gravityFormsForm(id: $formId, idType: DATABASE_ID) {
       formId
+      title
+      description
       button {
         text
       }

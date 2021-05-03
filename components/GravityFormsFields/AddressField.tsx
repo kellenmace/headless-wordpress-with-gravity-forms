@@ -9,6 +9,7 @@ export const ADDRESS_FIELD_FIELDS = gql`
     id
     formId
     label
+    cssClass
     inputs {
       key
       label
@@ -32,7 +33,7 @@ const AUTOCOMPLETE_ATTRIBUTES: { [key: string]: string } = {
 };
 
 export default function AddressField({ field }: Props) {
-  const { id, formId, label, inputs } = field;
+  const { id, formId, type, label, cssClass, inputs } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
   const fieldValue = state.find((fieldValue: AddressFieldValue) => fieldValue.id === id);
@@ -52,7 +53,7 @@ export default function AddressField({ field }: Props) {
   }
 
   return (
-    <fieldset id={htmlId}>
+    <fieldset id={htmlId} className={`gfield gfield-${type} ${cssClass}`.trim()}>
       <legend>{label}</legend>
       {inputs?.map(input => {
         const key = input?.key || '';

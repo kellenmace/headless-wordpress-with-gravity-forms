@@ -9,6 +9,7 @@ export const SELECT_FIELD_FIELDS = gql`
     formId
     label
     isRequired
+    cssClass
     defaultValue
     choices {
       text
@@ -22,14 +23,14 @@ interface Props {
 }
 
 export default function SelectField({ field }: Props) {
-  const { id, formId, label, isRequired, defaultValue, choices } = field;
+  const { id, formId, type, label, isRequired, cssClass, defaultValue, choices } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
   const fieldValue = state.find((fieldValue: StringFieldValue) => fieldValue.id === id);
   const value = fieldValue?.value || defaultValue;
 
   return (
-    <>
+    <div className={`gfield gfield-${type} ${cssClass}`.trim()}>
       <label htmlFor={htmlId}>{label}</label>
       <select
         name={String(id)}
@@ -50,6 +51,6 @@ export default function SelectField({ field }: Props) {
           <option key={choice?.value || ''} value={choice?.value || ''}>{choice?.text || ''}</option>
         )}
       </select>
-    </>
+    </div>
   );
 }

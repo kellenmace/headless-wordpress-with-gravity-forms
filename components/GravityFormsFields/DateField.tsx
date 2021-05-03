@@ -8,6 +8,7 @@ export const DATE_FIELD_FIELDS = gql`
     id
     formId
     label
+    cssClass
     isRequired
     placeholder
   }
@@ -20,14 +21,14 @@ interface Props {
 const DEFAULT_VALUE = '';
 
 export default function DateField({ field }: Props) {
-  const { id, formId, label, isRequired, placeholder } = field;
+  const { id, formId, type, label, cssClass, isRequired, placeholder } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
   const fieldValue = state.find((fieldValue: StringFieldValue) => fieldValue.id === id);
   const value = fieldValue?.value || DEFAULT_VALUE;
 
   return (
-    <>
+    <div className={`gfield gfield-${type} ${cssClass}`.trim()}>
       <label htmlFor={htmlId}>{label}</label>
       <input
         type="date"
@@ -46,6 +47,6 @@ export default function DateField({ field }: Props) {
           })
         }}
       />
-    </>
+    </div>
   );
 }

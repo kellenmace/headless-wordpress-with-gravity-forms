@@ -9,6 +9,7 @@ export const PHONE_FIELD_FIELDS = gql`
     formId
     label
     isRequired
+    cssClass
     placeholder
   }
 `;
@@ -20,14 +21,14 @@ interface Props {
 const DEFAULT_VALUE = '';
 
 export default function PhoneField({ field }: Props) {
-  const { id, formId, label, isRequired, placeholder } = field;
+  const { id, formId, type, label, isRequired, cssClass, placeholder } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
   const fieldValue = state.find((fieldValue: StringFieldValue) => fieldValue.id === id);
   const value = fieldValue?.value || DEFAULT_VALUE;
 
   return (
-    <>
+    <div className={`gfield gfield-${type} ${cssClass}`.trim()}>
       <label htmlFor={htmlId}>{label}</label>
       <input
         type="tel"
@@ -46,6 +47,6 @@ export default function PhoneField({ field }: Props) {
           })
         }}
       />
-    </>
+    </div>
   );
 }

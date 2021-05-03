@@ -7,12 +7,14 @@ interface Props {
 }
 
 export default function Questionnaire({ form }: Props) {
+  const { title, description } = form;
+
   return (
-    <>
-      <h1>Questionnaire</h1>
-      <p>Please let us know how we can help.</p>
+    <main>
+      <h1>{title}</h1>
+      <p>{description}</p>
       <GravityForm form={form} />
-    </>
+    </main>
   );
 }
 

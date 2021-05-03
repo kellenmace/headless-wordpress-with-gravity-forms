@@ -14,3 +14,42 @@ a {
 * {
   box-sizing: border-box;
 }
+
+main {
+  /* border: 2px solid red; */
+  margin: 6rem 14rem;
+  background: #efefef;
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.gfield + .gfield {
+  margin-top: 2rem;
+}
+
+.gfield-date label,
+.gfield-email label,
+.gfield-multiselect label,
+.gfield-phone label,
+.gfield-select label,
+.gfield-textarea label,
+.gfield-text label,
+.gfield-time label,
+.gfield-website label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+button {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #ddd;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover,
+button:active {
+  background: #ccc;
+}

@@ -8,6 +8,7 @@ export const TIME_FIELD_FIELDS = gql`
     id
     formId
     label
+    cssClass
     isRequired
   }
 `;
@@ -19,14 +20,14 @@ interface Props {
 const DEFAULT_VALUE = '';
 
 export default function TimeField({ field }: Props) {
-  const { id, formId, label, isRequired } = field;
+  const { id, formId, type, label, cssClass, isRequired } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
   const fieldValue = state.find((fieldValue: StringFieldValue) => fieldValue.id === id);
   const value = fieldValue?.value || DEFAULT_VALUE;
 
   return (
-    <>
+    <div className={`gfield gfield-${type} ${cssClass}`.trim()}>
       <label htmlFor={htmlId}>{label}</label>
       <input
         type="time"
@@ -44,6 +45,6 @@ export default function TimeField({ field }: Props) {
           })
         }}
       />
-    </>
+    </div>
   );
 }

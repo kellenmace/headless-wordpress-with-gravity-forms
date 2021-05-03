@@ -8,6 +8,7 @@ export const CHECKBOX_FIELD_FIELDS = gql`
     id
     formId
     label
+    cssClass
     inputs {
       id
     }
@@ -25,7 +26,7 @@ interface Props {
 const DEFAULT_VALUE: SingleCheckboxValue[] = [];
 
 export default function CheckboxField({ field }: Props) {
-  const { id, formId, label, inputs, choices } = field;
+  const { id, formId, type, label, cssClass, inputs, choices } = field;
   const checkboxInputs = choices?.map((choice, index) => ({ ...choice, id: inputs?.[index]?.id })) || [];
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
@@ -52,7 +53,7 @@ export default function CheckboxField({ field }: Props) {
   }
 
   return (
-    <fieldset id={htmlId}>
+    <fieldset id={htmlId} className={`gfield gfield-${type} ${cssClass}`.trim()}>
       <legend>{label}</legend>
       {checkboxInputs.map(({ id: inputId, text, value }) =>
         <div key={inputId}>
