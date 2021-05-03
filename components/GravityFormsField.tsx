@@ -3,6 +3,7 @@ import CheckboxField from "./GravityFormsFields/CheckboxField";
 import DateField from "./GravityFormsFields/DateField";
 import EmailField from "./GravityFormsFields/EmailField";
 import MultiSelectField from "./GravityFormsFields/MultiSelectField";
+import NameField from "./GravityFormsFields/NameField";
 import PhoneField from "./GravityFormsFields/PhoneField";
 import RadioField from "./GravityFormsFields/RadioField";
 import SelectField from "./GravityFormsFields/SelectField";
@@ -25,6 +26,8 @@ export default function Field({ field }: Props) {
       return <EmailField field={field} />;
     case "multiselect":
       return <MultiSelectField field={field} />;
+    case "name":
+      return <NameField field={field} />;
     case "phone":
       return <PhoneField field={field} />;
     case "radio":

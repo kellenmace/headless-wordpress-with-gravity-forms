@@ -19,6 +19,18 @@ export interface EmailFieldValue extends FieldValue {
   };
 }
 
+export type NameValues = {
+  prefix?: string;
+  first?: string;
+  middle?: string;
+  last?: string;
+  suffix?: string
+}
+
+export interface NameFieldValue extends FieldValue {
+  nameValues: NameValues;
+}
+
 export interface StringFieldValue extends FieldValue {
   value: string;
 }
@@ -27,7 +39,7 @@ export interface StringFieldValues extends FieldValue {
   values: string[];
 }
 
-export type FieldValueUnion = CheckboxFieldValue | EmailFieldValue | StringFieldValue | StringFieldValues;
+export type FieldValueUnion = CheckboxFieldValue | EmailFieldValue | NameFieldValue | StringFieldValue | StringFieldValues;
 
 interface Action {
   type: ACTION_TYPES;
@@ -39,6 +51,7 @@ export enum ACTION_TYPES {
   updateDateFieldValue = 'updateDateFieldValue',
   updateEmailFieldValue = 'updateEmailFieldValue',
   updateMultiSelectFieldValue = 'updateMultiSelectFieldValue',
+  updateNameFieldValue = 'updateNameFieldValue',
   updatePhoneFieldValue = 'updatePhoneFieldValue',
   updateRadioFieldValue = 'updateRadioFieldValue',
   updateSelectFieldValue = 'updateSelectFieldValue',
@@ -63,6 +76,10 @@ function reducer(state: FieldValueUnion[], action: Action) {
     case ACTION_TYPES.updateMultiSelectFieldValue: {
       const { id, values } = action.fieldValue as StringFieldValues;
       return [...getOtherFieldValues(id), { id, values }];
+    }
+    case ACTION_TYPES.updateNameFieldValue: {
+      const { id, nameValues } = action.fieldValue as NameFieldValue;
+      return [...getOtherFieldValues(id), { id, nameValues }];
     }
     case ACTION_TYPES.updateDateFieldValue:
     case ACTION_TYPES.updateRadioFieldValue:

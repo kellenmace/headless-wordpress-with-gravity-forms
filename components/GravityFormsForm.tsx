@@ -1,5 +1,4 @@
 import { useMutation, gql } from "@apollo/client";
-import { SyntheticEvent } from "react";
 
 import { GravityFormsForm as GravityFormsFormType, FormField } from "../generated/graphql";
 import useGravityForm from "../hooks/useGravityForm";
@@ -27,9 +26,9 @@ export default function GravityFormsForm({ form }: Props) {
   const formFields = form.fields?.nodes || [];
   const { state } = useGravityForm();
 
-  console.table(state);
+  console.log({ state });
 
-  function handleSubmit(event: SyntheticEvent) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (loading) return;
 
