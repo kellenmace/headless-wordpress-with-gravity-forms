@@ -14,6 +14,10 @@ export const NAME_FIELD_FIELDS = gql`
       key
       label
       placeholder
+      choices {
+        text
+        value
+      }
     }
   }
 `;
@@ -68,15 +72,15 @@ export default function NameField({ field, fieldErrors }: Props) {
             value={nameValues.prefix || ''}
             onChange={handleChange}
           >
-            {/* TODO: Query for these when they're added to the GraphQL schema: https://github.com/harness-software/wp-graphql-gravity-forms/issues/101 */}
             <option value=""></option>
-            <option value="Mr.">Mr.</option>
-            <option value="Mrs.">Mrs.</option>
-            <option value="Miss">Miss</option>
-            <option value="Ms.">Ms.</option>
-            <option value="Dr.">Dr.</option>
-            <option value="Prof.">Prof.</option>
-            <option value="Rev.">Rev.</option>
+            {prefixInput.choices?.map(choice =>
+              <option
+                key={choice?.value}
+                value={String(choice?.value)}
+              >
+                {String(choice?.text)}
+              </option>
+            )}
           </select>
           <label htmlFor={`input_${formId}_${id}_${prefixInput.key}`}>{prefixInput.label}</label>
         </> : null
