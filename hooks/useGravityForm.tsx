@@ -1,47 +1,25 @@
-import { createContext, ReactNode, useContext, useReducer } from "react";
+import { createContext, Dispatch, ReactNode, useContext, useReducer } from "react";
 
-interface FieldValue {
+import { AddressInput, EmailInput, NameInput, CheckboxInput } from "../generated/graphql";
+
+export interface FieldValue {
   id: number;
 }
 
-export type AddressValues = {
-  street?: string;
-  lineTwo?: string;
-  city?: string;
-  state?: string;
-  zip?: string;
-  country?: string;
-};
-
 export interface AddressFieldValue extends FieldValue {
-  addressValues: AddressValues;
+  addressValues: AddressInput;
 }
 
-export type SingleCheckboxValue = {
-  inputId: number;
-  value: string;
-};
-
 export interface CheckboxFieldValue extends FieldValue {
-  checkboxValues: SingleCheckboxValue[];
+  checkboxValues: CheckboxInput[];
 }
 
 export interface EmailFieldValue extends FieldValue {
-  emailValues: {
-    value: string;
-  };
+  emailValues: EmailInput;
 }
 
-export type NameValues = {
-  prefix?: string;
-  first?: string;
-  middle?: string;
-  last?: string;
-  suffix?: string;
-};
-
 export interface NameFieldValue extends FieldValue {
-  nameValues: NameValues;
+  nameValues: NameInput;
 }
 
 export interface StringFieldValue extends FieldValue {
@@ -116,7 +94,14 @@ function reducer(state: FieldValueUnion[], action: Action) {
 }
 
 const DEFAULT_STATE: FieldValueUnion[] = [];
-const GravityFormContext = createContext(DEFAULT_STATE);
+
+const GravityFormContext = createContext<{
+  state: FieldValueUnion[];
+  dispatch: Dispatch<Action>;
+}>({
+  state: DEFAULT_STATE,
+  dispatch: () => null
+});
 
 export function GravityFormProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, DEFAULT_STATE);

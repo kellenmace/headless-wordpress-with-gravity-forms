@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
-import { NameField as NameFieldType, FieldError } from "../../generated/graphql";
-import useGravityForm, { ACTION_TYPES, NameFieldValue, NameValues } from "../../hooks/useGravityForm";
+import { NameField as NameFieldType, NameInput, FieldError } from "../../generated/graphql";
+import useGravityForm, { ACTION_TYPES, FieldValue, NameFieldValue } from "../../hooks/useGravityForm";
 
 export const NAME_FIELD_FIELDS = gql`
   fragment NameFieldFields on NameField {
@@ -23,7 +23,7 @@ interface Props {
   fieldErrors: FieldError[];
 }
 
-const DEFAULT_VALUE: NameValues = {};
+const DEFAULT_VALUE: NameInput = {};
 
 const AUTOCOMPLETE_ATTRIBUTES: { [key: string]: string } = {
   prefix: 'honorific-prefix',
@@ -37,7 +37,7 @@ export default function NameField({ field, fieldErrors }: Props) {
   const { id, formId, type, label, description, cssClass, inputs } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
-  const fieldValue = state.find((fieldValue: NameFieldValue) => fieldValue.id === id);
+  const fieldValue = state.find((fieldValue: FieldValue) => fieldValue.id === id) as NameFieldValue | undefined;
   const nameValues = fieldValue?.nameValues || DEFAULT_VALUE;
 
   const prefixInput = inputs?.find(input => input?.key === 'prefix');
@@ -65,7 +65,7 @@ export default function NameField({ field, fieldErrors }: Props) {
             name={String(prefixInput.key)}
             id={`input_${formId}_${id}_${prefixInput.key}`}
             autoComplete={AUTOCOMPLETE_ATTRIBUTES.prefix}
-            value={nameValues?.[String(prefixInput.key)] || ''}
+            value={nameValues.prefix || ''}
             onChange={handleChange}
           >
             {/* TODO: Query for these when they're added to the GraphQL schema: https://github.com/harness-software/wp-graphql-gravity-forms/issues/101 */}
@@ -82,7 +82,7 @@ export default function NameField({ field, fieldErrors }: Props) {
         </> : null
       }
       {otherInputs.map(input => {
-        const key = input?.key || '';
+        const key = input?.key as keyof NameInput;
         const inputLabel = input?.label || '';
         const placeholder = input?.placeholder || '';
         return (

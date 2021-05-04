@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import { GravityFormsForm } from "../generated/graphql";
 
 import { client } from "../services/apollo";
 import { ADDRESS_FIELD_FIELDS } from "../components/GravityFormsFields/AddressField";
@@ -90,12 +91,12 @@ const GET_FORM = gql`
   ${WEBSITE_FIELD_FIELDS}
 `;
 
-export default async function getGravityForm(formId: number): Promise<any> {
+export default async function getGravityForm(formId: number): Promise<GravityFormsForm | undefined> {
   const result = await client
     .query({
       query: GET_FORM,
       variables: { formId },
     });
 
-  return result?.data?.gravityFormsForm || null;
+  return result?.data?.gravityFormsForm;
 }

@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 import React from "react";
 
-import { AddressField as AddressFieldType, FieldError } from "../../generated/graphql";
-import useGravityForm, { ACTION_TYPES, AddressFieldValue, AddressValues } from "../../hooks/useGravityForm";
+import { AddressField as AddressFieldType, AddressInput, FieldError } from "../../generated/graphql";
+import useGravityForm, { ACTION_TYPES, FieldValue, AddressFieldValue } from "../../hooks/useGravityForm";
 
 export const ADDRESS_FIELD_FIELDS = gql`
   fragment AddressFieldFields on AddressField {
@@ -24,7 +24,7 @@ interface Props {
   fieldErrors: FieldError[];
 }
 
-const DEFAULT_VALUE: AddressValues = {};
+const DEFAULT_VALUE: AddressInput = {};
 
 const AUTOCOMPLETE_ATTRIBUTES: { [key: string]: string } = {
   street: 'address-line1',
@@ -38,7 +38,7 @@ export default function AddressField({ field, fieldErrors }: Props) {
   const { id, formId, type, label, description, cssClass, inputs } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
-  const fieldValue = state.find((fieldValue: AddressFieldValue) => fieldValue.id === id);
+  const fieldValue = state.find((fieldValue: FieldValue) => fieldValue.id === id) as AddressFieldValue | undefined;
   const addressValues = fieldValue?.addressValues || DEFAULT_VALUE;
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -58,7 +58,7 @@ export default function AddressField({ field, fieldErrors }: Props) {
     <fieldset id={htmlId} className={`gfield gfield-${type} ${cssClass}`.trim()}>
       <legend>{label}</legend>
       {inputs?.map(input => {
-        const key = input?.key || '';
+        const key = input?.key as keyof AddressInput;
         const inputLabel = input?.label || '';
         const placeholder = input?.placeholder || '';
         return (
@@ -69,7 +69,7 @@ export default function AddressField({ field, fieldErrors }: Props) {
               id={`input_${formId}_${id}_${key}`}
               placeholder={placeholder}
               autoComplete={AUTOCOMPLETE_ATTRIBUTES[key]}
-              value={addressValues?.[key] || ''}
+              value={addressValues?.[key] ?? ''}
               onChange={handleChange}
             />
             <label htmlFor={`input_${formId}_${id}_${key}`}>{inputLabel}</label>

@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
-import Select from 'react-select';
+import Select, { ValueType, ActionMeta, OptionTypeBase } from "react-select";
 
 import { MultiSelectField as MultiSelectFieldType, FieldError } from "../../generated/graphql";
-import useGravityForm, { ACTION_TYPES, StringFieldValues } from "../../hooks/useGravityForm";
+import useGravityForm, { ACTION_TYPES, FieldValue, StringFieldValues } from "../../hooks/useGravityForm";
 
 export const MULTI_SELECT_FIELD_FIELDS = gql`
   fragment MultiSelectFieldFields on MultiSelectField {
@@ -24,7 +24,7 @@ interface Props {
   fieldErrors: FieldError[];
 }
 
-interface Option {
+interface Option extends OptionTypeBase {
   value: string;
   label: string;
 }
@@ -35,13 +35,13 @@ export default function MultiSelectField({ field, fieldErrors }: Props) {
   const { id, formId, type, label, description, cssClass, isRequired, choices } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
-  const fieldValue = state.find((fieldValue: StringFieldValues) => fieldValue.id === id);
+  const fieldValue = state.find((fieldValue: FieldValue) => fieldValue.id === id) as StringFieldValues | undefined;
   const values = fieldValue?.values || DEFAULT_VALUE;
   const options = choices?.map(choice => ({ value: choice?.value, label: choice?.text })) || [];
-  const selectedOptions = options.filter(option => values.includes(option.value));
+  const selectedOptions = options.filter(option => values.includes(String(option?.value)));
 
-  function handleChange(selectedOptions: Option[]) {
-    const values = selectedOptions.map(option => option.value);
+  function handleChange(value: ValueType<any, boolean>, actionMeta: ActionMeta<any>) {
+    const values = value.map((option: Option) => option.value);
     dispatch({
       type: ACTION_TYPES.updateMultiSelectFieldValue,
       fieldValue: { id, values },

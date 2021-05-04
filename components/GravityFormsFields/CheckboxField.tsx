@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
-import { CheckboxField as CheckboxFieldType, FieldError } from "../../generated/graphql";
-import useGravityForm, { ACTION_TYPES, CheckboxFieldValue, SingleCheckboxValue } from "../../hooks/useGravityForm";
+import { CheckboxField as CheckboxFieldType, CheckboxInput, FieldError } from "../../generated/graphql";
+import useGravityForm, { ACTION_TYPES, FieldValue, CheckboxFieldValue } from "../../hooks/useGravityForm";
 
 export const CHECKBOX_FIELD_FIELDS = gql`
   fragment CheckboxFieldFields on CheckboxField {
@@ -25,20 +25,20 @@ interface Props {
   fieldErrors: FieldError[];
 }
 
-const DEFAULT_VALUE: SingleCheckboxValue[] = [];
+const DEFAULT_VALUE: CheckboxInput[] = [];
 
 export default function CheckboxField({ field, fieldErrors }: Props) {
   const { id, formId, type, label, description, cssClass, inputs, choices } = field;
   const checkboxInputs = choices?.map((choice, index) => ({ ...choice, id: inputs?.[index]?.id })) || [];
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
-  const fieldValue = state.find((fieldValue: CheckboxFieldValue) => fieldValue.id === id);
+  const fieldValue = state.find((fieldValue: FieldValue) => fieldValue.id === id) as CheckboxFieldValue | undefined;
   const checkboxValues = fieldValue?.checkboxValues || DEFAULT_VALUE;
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value, checked } = event.target;
     const otherCheckboxValues = checkboxValues.filter(
-      (checkboxValue: SingleCheckboxValue) => checkboxValue.inputId !== Number(name)
+      (checkboxValue: CheckboxInput) => checkboxValue.inputId !== Number(name)
     );
     const newCheckboxValues = checked ?
       [...otherCheckboxValues, { inputId: Number(name), value }]
