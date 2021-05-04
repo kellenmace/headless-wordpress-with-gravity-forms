@@ -16,6 +16,8 @@ export type AddressField = FormField & {
   __typename?: 'AddressField';
   /** Determines the type of address to be displayed. */
   addressType?: Maybe<AddressTypeEnum>;
+  /** Address field value. */
+  addressValues?: Maybe<AddressValueProperty>;
   /** When specified, the value of this property will be used on the admin pages instead of the label. It is useful for fields with long labels. */
   adminLabel?: Maybe<Scalars['String']>;
   /** Determines if this field should only visible on the administration pages. A value of 1 will mark the field as admin only and will hide it from the public form. Useful for fields such as “status” that help with managing entries, but don’t apply to users filling out the form. */
@@ -139,6 +141,23 @@ export enum AddressTypeEnum {
   /** United States address type. */
   Us = 'US'
 }
+
+/** The individual properties for each element of the address value field. */
+export type AddressValueProperty = {
+  __typename?: 'AddressValueProperty';
+  /** Address city. */
+  city?: Maybe<Scalars['String']>;
+  /** Address country name. */
+  country?: Maybe<Scalars['String']>;
+  /** Address line two. */
+  lineTwo?: Maybe<Scalars['String']>;
+  /** Address state/region/province name. */
+  state?: Maybe<Scalars['String']>;
+  /** Street address. */
+  street?: Maybe<Scalars['String']>;
+  /** Address zip code */
+  zip?: Maybe<Scalars['String']>;
+};
 
 /** Avatars are profile images for users. WordPress by default uses the Gravatar service to host and fetch avatars from. */
 export type Avatar = {
@@ -720,8 +739,17 @@ export type ChainedSelectField = FormField & {
   subLabelPlacement?: Maybe<Scalars['String']>;
   /** The type of field to be displayed. */
   type: Scalars['String'];
+  /** ChainedSelect field value. */
+  values?: Maybe<Array<Maybe<Scalars['String']>>>;
   /** Field visibility. */
   visibility?: Maybe<VisibilityPropertyEnum>;
+};
+
+/** Chained Select field values. */
+export type ChainedSelectFieldValue = {
+  __typename?: 'ChainedSelectFieldValue';
+  /** Field values. */
+  values?: Maybe<Array<Maybe<Scalars['String']>>>;
 };
 
 /** Input fields for a single ChainedSelect. */
@@ -756,13 +784,6 @@ export type ChainedSelectInputProperty = {
   name?: Maybe<Scalars['String']>;
 };
 
-/** Chained Select field values. */
-export type ChainedSelectValue = {
-  __typename?: 'ChainedSelectValue';
-  /** Field values. */
-  values?: Maybe<Array<Maybe<Scalars['String']>>>;
-};
-
 /** Alignment of the dropdown fields. */
 export enum ChainedSelectsAlignmentEnum {
   /** Horizontal alignment (in a row). */
@@ -780,6 +801,8 @@ export type CheckboxField = FormField & {
   adminOnly?: Maybe<Scalars['Boolean']>;
   /** Determines if the field’s value can be pre-populated dynamically. 1 to allow field to be pre-populated, 0 otherwise. */
   allowsPrepopulate?: Maybe<Scalars['Boolean']>;
+  /** Checkbox field value. */
+  checkboxValues?: Maybe<Array<Maybe<CheckboxValueProperty>>>;
   /** Contains the available choices for the field. For instance, drop down items and checkbox items are configured with this property. */
   choices?: Maybe<Array<Maybe<ChoiceProperty>>>;
   /** Controls the visibility of the field based on values selected by the user. */
@@ -852,6 +875,15 @@ export type CheckboxInputProperty = {
 /** Value for a single input within a checkbox field. */
 export type CheckboxInputValue = {
   __typename?: 'CheckboxInputValue';
+  /** Input ID. */
+  inputId?: Maybe<Scalars['Float']>;
+  /** Input value */
+  value?: Maybe<Scalars['String']>;
+};
+
+/** The individual properties for each element of the Checkbox value field. */
+export type CheckboxValueProperty = {
+  __typename?: 'CheckboxValueProperty';
   /** Input ID. */
   inputId?: Maybe<Scalars['Float']>;
   /** Input value */
@@ -1253,6 +1285,8 @@ export type ConsentField = FormField & {
   label?: Maybe<Scalars['String']>;
   /** The type of field to be displayed. */
   type: Scalars['String'];
+  /** Consent field value. */
+  value?: Maybe<Scalars['String']>;
   /** Field visibility. */
   visibility?: Maybe<VisibilityPropertyEnum>;
 };
@@ -1961,6 +1995,8 @@ export type DateField = FormField & {
   subLabelPlacement?: Maybe<Scalars['String']>;
   /** The type of field to be displayed. */
   type: Scalars['String'];
+  /** Date field value. */
+  value?: Maybe<Scalars['String']>;
   /** Field visibility. */
   visibility?: Maybe<VisibilityPropertyEnum>;
 };
@@ -2302,6 +2338,8 @@ export type EmailField = FormField & {
   subLabelPlacement?: Maybe<Scalars['String']>;
   /** The type of field to be displayed. */
   type: Scalars['String'];
+  /** Email field value. */
+  value?: Maybe<Scalars['String']>;
   /** Field visibility. */
   visibility?: Maybe<VisibilityPropertyEnum>;
 };
@@ -2542,6 +2580,8 @@ export type FileUploadField = FormField & {
   size?: Maybe<SizePropertyEnum>;
   /** The type of field to be displayed. */
   type: Scalars['String'];
+  /** FileUpload field value. */
+  value?: Maybe<Scalars['String']>;
   /** Field visibility. */
   visibility?: Maybe<VisibilityPropertyEnum>;
 };
@@ -2755,8 +2795,6 @@ export type GravityFormsEntry = {
   dateUpdated?: Maybe<Scalars['String']>;
   /** The entry ID. Returns null for draft entries. */
   entryId?: Maybe<Scalars['Int']>;
-  /** Connection between the GravityFormsEntry type and the FormField type */
-  fields?: Maybe<GravityFormsEntryToFieldsConnection>;
   /** The Gravity Forms form associated with the entry. */
   form?: Maybe<EntryForm>;
   /** Connection between the GravityFormsEntry type and the FormField type */
@@ -2787,42 +2825,11 @@ export type GravityFormsEntry = {
 
 
 /** Gravity Forms entry. */
-export type GravityFormsEntryFieldsArgs = {
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  after?: Maybe<Scalars['String']>;
-  before?: Maybe<Scalars['String']>;
-};
-
-
-/** Gravity Forms entry. */
 export type GravityFormsEntryFormFieldsArgs = {
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
   before?: Maybe<Scalars['String']>;
-};
-
-/** Connection between the GravityFormsEntry type and the FormField type */
-export type GravityFormsEntryToFieldsConnection = {
-  __typename?: 'GravityFormsEntryToFieldsConnection';
-  /** Edges for the GravityFormsEntryToFieldsConnection connection */
-  edges?: Maybe<Array<Maybe<GravityFormsEntryToFieldsConnectionEdge>>>;
-  /** The nodes of the connection, without the edges */
-  nodes?: Maybe<Array<Maybe<FormField>>>;
-  /** Information about pagination in a connection. */
-  pageInfo?: Maybe<WpPageInfo>;
-};
-
-/** An edge in a connection */
-export type GravityFormsEntryToFieldsConnectionEdge = {
-  __typename?: 'GravityFormsEntryToFieldsConnectionEdge';
-  /** A cursor for use in pagination */
-  cursor?: Maybe<Scalars['String']>;
-  /** Field value. */
-  fieldValue?: Maybe<ObjectFieldValueUnion>;
-  /** The item at the end of the edge */
-  node?: Maybe<FormField>;
 };
 
 /** Connection between the GravityFormsEntry type and the FormField type */
@@ -2841,7 +2848,10 @@ export type GravityFormsEntryToFormFieldConnectionEdge = {
   __typename?: 'GravityFormsEntryToFormFieldConnectionEdge';
   /** A cursor for use in pagination */
   cursor?: Maybe<Scalars['String']>;
-  /** Field value. */
+  /**
+   * Field value.
+   * @deprecated Please use `formFields.nodes.value` instead.
+   */
   fieldValue?: Maybe<ObjectFieldValueUnion>;
   /** The item at the end of the edge */
   node?: Maybe<FormField>;
@@ -2873,8 +2883,6 @@ export type GravityFormsForm = {
   enableHoneypot?: Maybe<Scalars['Boolean']>;
   /** Connection between the GravityFormsForm type and the GravityFormsEntry type */
   entries?: Maybe<GravityFormsFormToGravityFormsEntryConnection>;
-  /** Connection between the GravityFormsForm type and the FormField type */
-  fields?: Maybe<GravityFormsFormToFieldsConnection>;
   /** CSS class for the first page. */
   firstPageCssClass?: Maybe<Scalars['String']>;
   /** Connection between the GravityFormsForm type and the FormField type */
@@ -2968,40 +2976,11 @@ export type GravityFormsFormEntriesArgs = {
 
 
 /** Gravity Forms form. */
-export type GravityFormsFormFieldsArgs = {
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  after?: Maybe<Scalars['String']>;
-  before?: Maybe<Scalars['String']>;
-};
-
-
-/** Gravity Forms form. */
 export type GravityFormsFormFormFieldsArgs = {
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
   before?: Maybe<Scalars['String']>;
-};
-
-/** Connection between the GravityFormsForm type and the FormField type */
-export type GravityFormsFormToFieldsConnection = {
-  __typename?: 'GravityFormsFormToFieldsConnection';
-  /** Edges for the GravityFormsFormToFieldsConnection connection */
-  edges?: Maybe<Array<Maybe<GravityFormsFormToFieldsConnectionEdge>>>;
-  /** The nodes of the connection, without the edges */
-  nodes?: Maybe<Array<Maybe<FormField>>>;
-  /** Information about pagination in a connection. */
-  pageInfo?: Maybe<WpPageInfo>;
-};
-
-/** An edge in a connection */
-export type GravityFormsFormToFieldsConnectionEdge = {
-  __typename?: 'GravityFormsFormToFieldsConnectionEdge';
-  /** A cursor for use in pagination */
-  cursor?: Maybe<Scalars['String']>;
-  /** The item at the end of the edge */
-  node?: Maybe<FormField>;
 };
 
 /** Connection between the GravityFormsForm type and the FormField type */
@@ -3092,6 +3071,8 @@ export type HiddenField = FormField & {
   size?: Maybe<SizePropertyEnum>;
   /** The type of field to be displayed. */
   type: Scalars['String'];
+  /** Hidden field value. */
+  value?: Maybe<Scalars['String']>;
   /**
    * Field visibility.
    * @deprecated This property is not associated with the Gravity Forms HiddenField type.
@@ -3442,6 +3423,8 @@ export type ListField = FormField & {
   label?: Maybe<Scalars['String']>;
   /** The field label position. */
   labelPlacement?: Maybe<LabelPlacementPropertyEnum>;
+  /** List field value. */
+  listValues?: Maybe<Array<Maybe<ListValueProperty>>>;
   /** The maximum number of rows the user can add to the field. */
   maxRows?: Maybe<Scalars['Int']>;
   /** The form page this field is located on. Default is 1. */
@@ -3472,6 +3455,18 @@ export type ListInput = {
 /** Value for a single input within a list field. */
 export type ListInputValue = {
   __typename?: 'ListInputValue';
+  /**
+   * Input value
+   * @deprecated Please use `values` instead.
+   */
+  value?: Maybe<Array<Maybe<Scalars['String']>>>;
+  /** Input values */
+  values?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+/** The individual properties for each element of the List value field. */
+export type ListValueProperty = {
+  __typename?: 'ListValueProperty';
   /**
    * Input value
    * @deprecated Please use `values` instead.
@@ -4320,6 +4315,8 @@ export type MultiSelectField = FormField & {
   size?: Maybe<SizePropertyEnum>;
   /** The type of field to be displayed. */
   type: Scalars['String'];
+  /** MultiSelect field value. */
+  values?: Maybe<Array<Maybe<Scalars['String']>>>;
   /** Field visibility. */
   visibility?: Maybe<VisibilityPropertyEnum>;
 };
@@ -4372,6 +4369,8 @@ export type NameField = FormField & {
   label?: Maybe<Scalars['String']>;
   /** The format of the name field. Originally, the name field could be a “normal” format with just First and Last being the fields displayed or an “extended” format which included prefix and suffix fields, or a “simple” format which just had one input field. These are legacy formats which are no longer used when adding a Name field to a form. The Name field was modified in a way which allows each of the components of the normal and extended formats to be able to be turned on or off. The nameFormat is now only “advanced”. Name fields in the previous formats are automatically upgraded to the new type if the form field is modified in the admin. The code is backwards-compatible and will continue to handle the “normal”, “extended”, “simple” formats for fields which have not yet been upgraded. */
   nameFormat?: Maybe<Scalars['String']>;
+  /** Name field value. */
+  nameValues?: Maybe<NameValueProperty>;
   /** Determines the size of the field when displayed on the page. */
   size?: Maybe<SizePropertyEnum>;
   /** The placement of the labels for the subfields within the group. This setting controls all of the subfields, they cannot be set individually. They may be aligned above or below the inputs. If this property is not set, the “Sub-Label Placement” setting on the Form Settings-&gt;Form Layout page is used. If no setting is specified, the default is above inputs. */
@@ -4434,6 +4433,21 @@ export type NameInputProperty = {
   name?: Maybe<Scalars['String']>;
   /** Placeholder text to give the user a hint on how to fill out the field. This is not submitted with the form. */
   placeholder?: Maybe<Scalars['String']>;
+};
+
+/** The individual properties for each element of the Name value field. */
+export type NameValueProperty = {
+  __typename?: 'NameValueProperty';
+  /** First name. */
+  first?: Maybe<Scalars['String']>;
+  /** Last name. */
+  last?: Maybe<Scalars['String']>;
+  /** Middle name. */
+  middle?: Maybe<Scalars['String']>;
+  /** Prefix, such as Mr., Mrs. etc. */
+  prefix?: Maybe<Scalars['String']>;
+  /** Suffix, such as Sr., Jr. etc. */
+  suffix?: Maybe<Scalars['String']>;
 };
 
 /** An object with an ID */
@@ -4625,6 +4639,8 @@ export type NumberField = FormField & {
   size?: Maybe<SizePropertyEnum>;
   /** The type of field to be displayed. */
   type: Scalars['String'];
+  /** Number field value. */
+  value?: Maybe<Scalars['String']>;
   /** Field visibility. */
   visibility?: Maybe<VisibilityPropertyEnum>;
 };
@@ -4646,7 +4662,7 @@ export type NumberFieldValue = {
   value?: Maybe<Scalars['String']>;
 };
 
-export type ObjectFieldValueUnion = AddressFieldValue | ChainedSelectValue | CheckboxFieldValue | ConsentFieldValue | DateFieldValue | EmailFieldValue | HiddenFieldValue | FileUploadFieldValue | ListFieldValue | MultiSelectFieldValue | NameFieldValue | NumberFieldValue | PhoneFieldValue | PostCategoryFieldValue | PostContentFieldValue | PostCustomFieldValue | PostExcerptFieldValue | PostTagsFieldValue | PostTitleFieldValue | RadioFieldValue | SelectFieldValue | SignatureFieldValue | TextAreaFieldValue | TextFieldValue | TimeFieldValue | WebsiteFieldValue;
+export type ObjectFieldValueUnion = AddressFieldValue | ChainedSelectFieldValue | CheckboxFieldValue | ConsentFieldValue | DateFieldValue | EmailFieldValue | HiddenFieldValue | FileUploadFieldValue | ListFieldValue | MultiSelectFieldValue | NameFieldValue | NumberFieldValue | PhoneFieldValue | PostCategoryFieldValue | PostContentFieldValue | PostCustomFieldValue | PostExcerptFieldValue | PostImageFieldValue | PostTagsFieldValue | PostTitleFieldValue | RadioFieldValue | SelectFieldValue | SignatureFieldValue | TextAreaFieldValue | TextFieldValue | TimeFieldValue | WebsiteFieldValue;
 
 /** The cardinality of the connection order */
 export enum OrderEnum {
@@ -5193,6 +5209,8 @@ export type PhoneField = FormField & {
   size?: Maybe<SizePropertyEnum>;
   /** The type of field to be displayed. */
   type: Scalars['String'];
+  /** Phone field value. */
+  value?: Maybe<Scalars['String']>;
   /** Field visibility. */
   visibility?: Maybe<VisibilityPropertyEnum>;
 };
@@ -5501,6 +5519,8 @@ export type PostCategoryField = FormField & {
   size?: Maybe<SizePropertyEnum>;
   /** The type of field to be displayed. */
   type: Scalars['String'];
+  /** PostCategory field value. */
+  values?: Maybe<Array<Maybe<Scalars['String']>>>;
   /** Field visibility. */
   visibility?: Maybe<VisibilityPropertyEnum>;
 };
@@ -5554,6 +5574,8 @@ export type PostContentField = FormField & {
   size?: Maybe<SizePropertyEnum>;
   /** The type of field to be displayed. */
   type: Scalars['String'];
+  /** PostContent field value. */
+  value?: Maybe<Scalars['String']>;
   /** Field visibility. */
   visibility?: Maybe<VisibilityPropertyEnum>;
 };
@@ -5615,6 +5637,8 @@ export type PostCustomField = FormField & {
   size?: Maybe<SizePropertyEnum>;
   /** The type of field to be displayed. */
   type: Scalars['String'];
+  /** PostCustom field value. */
+  values?: Maybe<Array<Maybe<Scalars['String']>>>;
   /** Field visibility. */
   visibility?: Maybe<VisibilityPropertyEnum>;
 };
@@ -5670,6 +5694,8 @@ export type PostExcerptField = FormField & {
   size?: Maybe<SizePropertyEnum>;
   /** The type of field to be displayed. */
   type: Scalars['String'];
+  /** PostExcerpt field value. */
+  value?: Maybe<Scalars['String']>;
   /** Field visibility. */
   visibility?: Maybe<VisibilityPropertyEnum>;
 };
@@ -5972,6 +5998,8 @@ export type PostImageField = FormField & {
   formId: Scalars['Int'];
   /** Field ID. */
   id: Scalars['Int'];
+  /** PostImage field value. */
+  imageValues?: Maybe<PostImageValueProperty>;
   /** Assigns a name to this field so that it can be populated dynamically via this input name. Only applicable when allowsPrepopulate is set to 1. */
   inputName?: Maybe<Scalars['String']>;
   /** Determines if the field requires the user to enter a value. 1 marks the field as required, 0 marks the field as not required. Fields marked as required will prevent the form from being submitted if the user has not entered a value in it. */
@@ -5984,6 +6012,32 @@ export type PostImageField = FormField & {
   type: Scalars['String'];
   /** Field visibility. */
   visibility?: Maybe<VisibilityPropertyEnum>;
+};
+
+/** Post title field value. */
+export type PostImageFieldValue = {
+  __typename?: 'PostImageFieldValue';
+  /** The image caption. */
+  caption?: Maybe<Scalars['String']>;
+  /** The image description. */
+  description?: Maybe<Scalars['String']>;
+  /** The image title. */
+  title?: Maybe<Scalars['String']>;
+  /** The image url. */
+  url?: Maybe<Scalars['String']>;
+};
+
+/** The individual properties for each element of the PostImage value field. */
+export type PostImageValueProperty = {
+  __typename?: 'PostImageValueProperty';
+  /** The image caption. */
+  caption?: Maybe<Scalars['String']>;
+  /** The image description. */
+  description?: Maybe<Scalars['String']>;
+  /** The image title. */
+  title?: Maybe<Scalars['String']>;
+  /** The image url. */
+  url?: Maybe<Scalars['String']>;
 };
 
 /** The format of post field data. */
@@ -6131,6 +6185,8 @@ export type PostTagsField = FormField & {
   size?: Maybe<SizePropertyEnum>;
   /** The type of field to be displayed. */
   type: Scalars['String'];
+  /** PostTags field value. */
+  values?: Maybe<Array<Maybe<Scalars['String']>>>;
   /** Field visibility. */
   visibility?: Maybe<VisibilityPropertyEnum>;
 };
@@ -6204,6 +6260,8 @@ export type PostTitleField = FormField & {
   size?: Maybe<SizePropertyEnum>;
   /** The type of field to be displayed. */
   type: Scalars['String'];
+  /** PostTitle field value. */
+  value?: Maybe<Scalars['String']>;
   /** Field visibility. */
   visibility?: Maybe<VisibilityPropertyEnum>;
 };
@@ -6764,6 +6822,8 @@ export type RadioField = FormField & {
   size?: Maybe<SizePropertyEnum>;
   /** The type of field to be displayed. */
   type: Scalars['String'];
+  /** Radio field value. */
+  value?: Maybe<Scalars['String']>;
   /** Field visibility. */
   visibility?: Maybe<VisibilityPropertyEnum>;
 };
@@ -6880,12 +6940,6 @@ export type RestoreCommentPayload = {
 /** The root mutation */
 export type RootMutation = {
   __typename?: 'RootMutation';
-  /** The payload for the UpdateCategory mutation */
-  updateCategory?: Maybe<UpdateCategoryPayload>;
-  /** The payload for the UpdatePostFormat mutation */
-  updatePostFormat?: Maybe<UpdatePostFormatPayload>;
-  /** The payload for the UpdateTag mutation */
-  updateTag?: Maybe<UpdateTagPayload>;
   /** The payload for the createCategory mutation */
   createCategory?: Maybe<CreateCategoryPayload>;
   /** The payload for the createComment mutation */
@@ -6938,6 +6992,8 @@ export type RootMutation = {
   submitGravityFormsDraftEntry?: Maybe<SubmitGravityFormsDraftEntryPayload>;
   /** The payload for the submitGravityFormsForm mutation */
   submitGravityFormsForm?: Maybe<SubmitGravityFormsFormPayload>;
+  /** The payload for the UpdateCategory mutation */
+  updateCategory?: Maybe<UpdateCategoryPayload>;
   /** The payload for the updateComment mutation */
   updateComment?: Maybe<UpdateCommentPayload>;
   /** The payload for the updateDraftEntryAddressFieldValue mutation */
@@ -7000,28 +7056,14 @@ export type RootMutation = {
   updatePage?: Maybe<UpdatePagePayload>;
   /** The payload for the updatePost mutation */
   updatePost?: Maybe<UpdatePostPayload>;
+  /** The payload for the UpdatePostFormat mutation */
+  updatePostFormat?: Maybe<UpdatePostFormatPayload>;
   /** The payload for the updateSettings mutation */
   updateSettings?: Maybe<UpdateSettingsPayload>;
+  /** The payload for the UpdateTag mutation */
+  updateTag?: Maybe<UpdateTagPayload>;
   /** The payload for the updateUser mutation */
   updateUser?: Maybe<UpdateUserPayload>;
-};
-
-
-/** The root mutation */
-export type RootMutationUpdateCategoryArgs = {
-  input: UpdateCategoryInput;
-};
-
-
-/** The root mutation */
-export type RootMutationUpdatePostFormatArgs = {
-  input: UpdatePostFormatInput;
-};
-
-
-/** The root mutation */
-export type RootMutationUpdateTagArgs = {
-  input: UpdateTagInput;
 };
 
 
@@ -7178,6 +7220,12 @@ export type RootMutationSubmitGravityFormsDraftEntryArgs = {
 /** The root mutation */
 export type RootMutationSubmitGravityFormsFormArgs = {
   input: SubmitGravityFormsFormInput;
+};
+
+
+/** The root mutation */
+export type RootMutationUpdateCategoryArgs = {
+  input: UpdateCategoryInput;
 };
 
 
@@ -7368,8 +7416,20 @@ export type RootMutationUpdatePostArgs = {
 
 
 /** The root mutation */
+export type RootMutationUpdatePostFormatArgs = {
+  input: UpdatePostFormatInput;
+};
+
+
+/** The root mutation */
 export type RootMutationUpdateSettingsArgs = {
   input: UpdateSettingsInput;
+};
+
+
+/** The root mutation */
+export type RootMutationUpdateTagArgs = {
+  input: UpdateTagInput;
 };
 
 
@@ -7399,7 +7459,9 @@ export type RootQuery = {
   contentType?: Maybe<ContentType>;
   /** Connection between the RootQuery type and the ContentType type */
   contentTypes?: Maybe<RootQueryToContentTypeConnection>;
+  /** Fields of the &#039;DiscussionSettings&#039; settings group */
   discussionSettings?: Maybe<DiscussionSettings>;
+  /** Fields of the &#039;GeneralSettings&#039; settings group */
   generalSettings?: Maybe<GeneralSettings>;
   /** Connection between the RootQuery type and the GravityFormsEntry type */
   gravityFormsEntries?: Maybe<RootQueryToGravityFormsEntryConnection>;
@@ -7456,6 +7518,7 @@ export type RootQuery = {
   postFormats?: Maybe<RootQueryToPostFormatConnection>;
   /** Connection between the RootQuery type and the post type */
   posts?: Maybe<RootQueryToPostConnection>;
+  /** Fields of the &#039;ReadingSettings&#039; settings group */
   readingSettings?: Maybe<ReadingSettings>;
   /** Connection between the RootQuery type and the EnqueuedScript type */
   registeredScripts?: Maybe<RootQueryToEnqueuedScriptConnection>;
@@ -7489,6 +7552,7 @@ export type RootQuery = {
   users?: Maybe<RootQueryToUserConnection>;
   /** Returns the current user */
   viewer?: Maybe<User>;
+  /** Fields of the &#039;WritingSettings&#039; settings group */
   writingSettings?: Maybe<WritingSettings>;
 };
 
@@ -8996,6 +9060,8 @@ export type SelectField = FormField & {
   size?: Maybe<SizePropertyEnum>;
   /** The type of field to be displayed. */
   type: Scalars['String'];
+  /** Select field value. */
+  value?: Maybe<Scalars['String']>;
   /** Field visibility. */
   visibility?: Maybe<VisibilityPropertyEnum>;
 };
@@ -9027,35 +9093,35 @@ export type SendPasswordResetEmailPayload = {
 /** All of the registered settings */
 export type Settings = {
   __typename?: 'Settings';
-  /** Allow people to submit comments on new posts. */
+  /** Settings of the the string Settings Group */
   discussionSettingsDefaultCommentStatus?: Maybe<Scalars['String']>;
-  /** Allow link notifications from other blogs (pingbacks and trackbacks) on new articles. */
+  /** Settings of the the string Settings Group */
   discussionSettingsDefaultPingStatus?: Maybe<Scalars['String']>;
-  /** A date format for all date strings. */
+  /** Settings of the the string Settings Group */
   generalSettingsDateFormat?: Maybe<Scalars['String']>;
-  /** Site tagline. */
+  /** Settings of the the string Settings Group */
   generalSettingsDescription?: Maybe<Scalars['String']>;
-  /** This address is used for admin purposes, like new user notification. */
+  /** Settings of the the string Settings Group */
   generalSettingsEmail?: Maybe<Scalars['String']>;
-  /** WordPress locale code. */
+  /** Settings of the the string Settings Group */
   generalSettingsLanguage?: Maybe<Scalars['String']>;
-  /** A day number of the week that the week should start on. */
+  /** Settings of the the integer Settings Group */
   generalSettingsStartOfWeek?: Maybe<Scalars['Int']>;
-  /** A time format for all time strings. */
+  /** Settings of the the string Settings Group */
   generalSettingsTimeFormat?: Maybe<Scalars['String']>;
-  /** A city in the same timezone as you. */
+  /** Settings of the the string Settings Group */
   generalSettingsTimezone?: Maybe<Scalars['String']>;
-  /** Site title. */
+  /** Settings of the the string Settings Group */
   generalSettingsTitle?: Maybe<Scalars['String']>;
-  /** Site URL. */
+  /** Settings of the the string Settings Group */
   generalSettingsUrl?: Maybe<Scalars['String']>;
-  /** Blog pages show at most. */
+  /** Settings of the the integer Settings Group */
   readingSettingsPostsPerPage?: Maybe<Scalars['Int']>;
-  /** Default post category. */
+  /** Settings of the the integer Settings Group */
   writingSettingsDefaultCategory?: Maybe<Scalars['Int']>;
-  /** Default post format. */
+  /** Settings of the the string Settings Group */
   writingSettingsDefaultPostFormat?: Maybe<Scalars['String']>;
-  /** Convert emoticons like :-) and :-P to graphics on display. */
+  /** Settings of the the boolean Settings Group */
   writingSettingsUseSmilies?: Maybe<Scalars['Boolean']>;
 };
 
@@ -9137,6 +9203,8 @@ export type SignatureField = FormField & {
   size?: Maybe<SizePropertyEnum>;
   /** The type of field to be displayed. */
   type: Scalars['String'];
+  /** Signature field value. */
+  value?: Maybe<Scalars['String']>;
   /** Field visibility. */
   visibility?: Maybe<VisibilityPropertyEnum>;
 };
@@ -9737,6 +9805,8 @@ export type TextAreaField = FormField & {
   type: Scalars['String'];
   /** Indicates whether the field uses the rich text editor interface. */
   useRichTextEditor?: Maybe<Scalars['Boolean']>;
+  /** TextArea field value. */
+  value?: Maybe<Scalars['String']>;
   /** Field visibility. */
   visibility?: Maybe<VisibilityPropertyEnum>;
 };
@@ -9796,6 +9866,8 @@ export type TextField = FormField & {
   size?: Maybe<SizePropertyEnum>;
   /** The type of field to be displayed. */
   type: Scalars['String'];
+  /** Text field value. */
+  value?: Maybe<Scalars['String']>;
   /** Field visibility. */
   visibility?: Maybe<VisibilityPropertyEnum>;
 };
@@ -9878,6 +9950,8 @@ export type TimeField = FormField & {
   subLabelPlacement?: Maybe<Scalars['String']>;
   /** Determines how the time is displayed. */
   timeFormat?: Maybe<TimeFieldFormatEnum>;
+  /** Time field value. */
+  timeValues?: Maybe<TimeValueProperty>;
   /** The type of field to be displayed. */
   type: Scalars['String'];
   /** Field visibility. */
@@ -9895,6 +9969,19 @@ export enum TimeFieldFormatEnum {
 /** Time field values. */
 export type TimeFieldValue = {
   __typename?: 'TimeFieldValue';
+  /** AM or PM. */
+  amPm?: Maybe<Scalars['String']>;
+  /** The full display value. Example: &quot;08:25 am&quot;. */
+  displayValue?: Maybe<Scalars['String']>;
+  /** The hours, in this format: hh. */
+  hours?: Maybe<Scalars['String']>;
+  /** The minutes, in this format: mm. */
+  minutes?: Maybe<Scalars['String']>;
+};
+
+/** The individual properties for each element of the Time value field. */
+export type TimeValueProperty = {
+  __typename?: 'TimeValueProperty';
   /** AM or PM. */
   amPm?: Maybe<Scalars['String']>;
   /** The full display value. Example: &quot;08:25 am&quot;. */
@@ -12586,6 +12673,8 @@ export type WebsiteField = FormField & {
   size?: Maybe<SizePropertyEnum>;
   /** The type of field to be displayed. */
   type: Scalars['String'];
+  /** Website field value. */
+  value?: Maybe<Scalars['String']>;
   /** Field visibility. */
   visibility?: Maybe<VisibilityPropertyEnum>;
 };
