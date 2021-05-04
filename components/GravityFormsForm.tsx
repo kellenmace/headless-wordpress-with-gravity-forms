@@ -32,10 +32,6 @@ export default function GravityFormsForm({ form }: Props) {
   const formFields = form.formFields?.nodes || [];
   const { state } = useGravityForm();
 
-  console.log({ form });
-  console.log({ state });
-  console.log({ data, loading, error });
-
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (loading) return;

@@ -40,10 +40,18 @@ main {
   margin-bottom: 0.5rem;
 }
 
+.field-description,
+.error-message {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+}
+
+.field-description {
+  color: #777;
+}
+
 .error-message {
   color: red;
-  margin: 0.5rem 0 0;
-  font-size: 0.9rem;
 }
 
 button {

@@ -8,8 +8,9 @@ export const SELECT_FIELD_FIELDS = gql`
     id
     formId
     label
-    isRequired
+    description
     cssClass
+    isRequired
     defaultValue
     choices {
       text
@@ -24,7 +25,7 @@ interface Props {
 }
 
 export default function SelectField({ field, fieldErrors }: Props) {
-  const { id, formId, type, label, isRequired, cssClass, defaultValue, choices } = field;
+  const { id, formId, type, label, description, cssClass, isRequired, defaultValue, choices } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
   const fieldValue = state.find((fieldValue: StringFieldValue) => fieldValue.id === id);
@@ -52,6 +53,7 @@ export default function SelectField({ field, fieldErrors }: Props) {
           <option key={choice?.value || ''} value={choice?.value || ''}>{choice?.text || ''}</option>
         )}
       </select>
+      {description ? <p className="field-description">{description}</p> : null}
       {fieldErrors?.length ? fieldErrors.map(fieldError => (
         <p key={fieldError.id} className="error-message">{fieldError.message}</p>
       )) : null}

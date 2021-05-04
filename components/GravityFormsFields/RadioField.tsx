@@ -8,6 +8,7 @@ export const RADIO_FIELD_FIELDS = gql`
     id
     formId
     label
+    description
     cssClass
     choices {
       text
@@ -24,7 +25,7 @@ interface Props {
 const DEFAULT_VALUE = '';
 
 export default function RadioField({ field, fieldErrors }: Props) {
-  const { id, formId, type, label, cssClass, choices } = field;
+  const { id, formId, type, label, description, cssClass, choices } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
   const fieldValue = state.find((fieldValue: StringFieldValue) => fieldValue.id === id);
@@ -55,6 +56,7 @@ export default function RadioField({ field, fieldErrors }: Props) {
           <label htmlFor={`choice_${formId}_${id}_${value}`}>{text}</label>
         </div>
       )}
+      {description ? <p className="field-description">{description}</p> : null}
       {fieldErrors?.length ? fieldErrors.map(fieldError => (
         <p key={fieldError.id} className="error-message">{fieldError.message}</p>
       )) : null}

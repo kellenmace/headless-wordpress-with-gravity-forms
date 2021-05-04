@@ -8,6 +8,7 @@ export const NAME_FIELD_FIELDS = gql`
     id
     formId
     label
+    description
     cssClass
     inputs {
       key
@@ -33,7 +34,7 @@ const AUTOCOMPLETE_ATTRIBUTES: { [key: string]: string } = {
 };
 
 export default function NameField({ field, fieldErrors }: Props) {
-  const { id, formId, type, label, cssClass, inputs } = field;
+  const { id, formId, type, label, description, cssClass, inputs } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
   const fieldValue = state.find((fieldValue: NameFieldValue) => fieldValue.id === id);
@@ -100,6 +101,7 @@ export default function NameField({ field, fieldErrors }: Props) {
         );
       }
       )}
+      {description ? <p className="field-description">{description}</p> : null}
       {fieldErrors?.length ? fieldErrors.map(fieldError => (
         <p key={fieldError.id} className="error-message">{fieldError.message}</p>
       )) : null}

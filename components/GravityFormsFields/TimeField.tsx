@@ -8,6 +8,7 @@ export const TIME_FIELD_FIELDS = gql`
     id
     formId
     label
+    description
     cssClass
     isRequired
   }
@@ -21,7 +22,7 @@ interface Props {
 const DEFAULT_VALUE = '';
 
 export default function TimeField({ field, fieldErrors }: Props) {
-  const { id, formId, type, label, cssClass, isRequired } = field;
+  const { id, formId, type, label, description, cssClass, isRequired } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
   const fieldValue = state.find((fieldValue: StringFieldValue) => fieldValue.id === id);
@@ -46,6 +47,7 @@ export default function TimeField({ field, fieldErrors }: Props) {
           })
         }}
       />
+      {description ? <p className="field-description">{description}</p> : null}
       {fieldErrors?.length ? fieldErrors.map(fieldError => (
         <p key={fieldError.id} className="error-message">{fieldError.message}</p>
       )) : null}

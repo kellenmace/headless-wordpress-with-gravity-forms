@@ -8,8 +8,9 @@ export const PHONE_FIELD_FIELDS = gql`
     id
     formId
     label
-    isRequired
+    description
     cssClass
+    isRequired
     placeholder
   }
 `;
@@ -22,7 +23,7 @@ interface Props {
 const DEFAULT_VALUE = '';
 
 export default function PhoneField({ field, fieldErrors }: Props) {
-  const { id, formId, type, label, isRequired, cssClass, placeholder } = field;
+  const { id, formId, type, label, description, cssClass, isRequired, placeholder } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
   const fieldValue = state.find((fieldValue: StringFieldValue) => fieldValue.id === id);
@@ -48,6 +49,7 @@ export default function PhoneField({ field, fieldErrors }: Props) {
           })
         }}
       />
+      {description ? <p className="field-description">{description}</p> : null}
       {fieldErrors?.length ? fieldErrors.map(fieldError => (
         <p key={fieldError.id} className="error-message">{fieldError.message}</p>
       )) : null}
