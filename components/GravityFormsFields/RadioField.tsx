@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-import { RadioField as RadioFieldType } from "../../generated/graphql";
+import { RadioField as RadioFieldType, FieldError } from "../../generated/graphql";
 import useGravityForm, { ACTION_TYPES, StringFieldValue } from "../../hooks/useGravityForm";
 
 export const RADIO_FIELD_FIELDS = gql`
@@ -18,11 +18,12 @@ export const RADIO_FIELD_FIELDS = gql`
 
 interface Props {
   field: RadioFieldType;
+  fieldErrors: FieldError[];
 }
 
 const DEFAULT_VALUE = '';
 
-export default function RadioField({ field }: Props) {
+export default function RadioField({ field, fieldErrors }: Props) {
   const { id, formId, type, label, cssClass, choices } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
@@ -54,6 +55,9 @@ export default function RadioField({ field }: Props) {
           <label htmlFor={`choice_${formId}_${id}_${value}`}>{text}</label>
         </div>
       )}
+      {fieldErrors?.length ? fieldErrors.map(fieldError => (
+        <p key={fieldError.id} className="error-message">{fieldError.message}</p>
+      )) : null}
     </fieldset>
   );
 }

@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-import { PhoneField as PhoneFieldType } from "../../generated/graphql";
+import { PhoneField as PhoneFieldType, FieldError } from "../../generated/graphql";
 import useGravityForm, { ACTION_TYPES, StringFieldValue } from "../../hooks/useGravityForm";
 
 export const PHONE_FIELD_FIELDS = gql`
@@ -16,11 +16,12 @@ export const PHONE_FIELD_FIELDS = gql`
 
 interface Props {
   field: PhoneFieldType;
+  fieldErrors: FieldError[];
 }
 
 const DEFAULT_VALUE = '';
 
-export default function PhoneField({ field }: Props) {
+export default function PhoneField({ field, fieldErrors }: Props) {
   const { id, formId, type, label, isRequired, cssClass, placeholder } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
@@ -47,6 +48,9 @@ export default function PhoneField({ field }: Props) {
           })
         }}
       />
+      {fieldErrors?.length ? fieldErrors.map(fieldError => (
+        <p key={fieldError.id} className="error-message">{fieldError.message}</p>
+      )) : null}
     </div>
   );
 }

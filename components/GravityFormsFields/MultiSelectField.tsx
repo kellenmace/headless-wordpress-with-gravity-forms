@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import Select from 'react-select';
 
-import { MultiSelectField as MultiSelectFieldType } from "../../generated/graphql";
+import { MultiSelectField as MultiSelectFieldType, FieldError } from "../../generated/graphql";
 import useGravityForm, { ACTION_TYPES, StringFieldValues } from "../../hooks/useGravityForm";
 
 export const MULTI_SELECT_FIELD_FIELDS = gql`
@@ -20,6 +20,7 @@ export const MULTI_SELECT_FIELD_FIELDS = gql`
 
 interface Props {
   field: MultiSelectFieldType;
+  fieldErrors: FieldError[];
 }
 
 interface Option {
@@ -29,7 +30,7 @@ interface Option {
 
 const DEFAULT_VALUE: string[] = [];
 
-export default function MultiSelectField({ field }: Props) {
+export default function MultiSelectField({ field, fieldErrors }: Props) {
   const { id, formId, type, label, isRequired, cssClass, choices } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
@@ -58,6 +59,9 @@ export default function MultiSelectField({ field }: Props) {
         value={selectedOptions}
         onChange={handleChange}
       />
+      {fieldErrors?.length ? fieldErrors.map(fieldError => (
+        <p key={fieldError.id} className="error-message">{fieldError.message}</p>
+      )) : null}
     </div>
   );
 }

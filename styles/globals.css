@@ -40,6 +40,12 @@ main {
   margin-bottom: 0.5rem;
 }
 
+.error-message {
+  color: red;
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+}
+
 button {
   margin-top: 2rem;
   padding: 1rem;

@@ -1,6 +1,6 @@
 import { useMutation, gql } from "@apollo/client";
 
-import { GravityFormsForm as GravityFormsFormType, FormField } from "../generated/graphql";
+import { GravityFormsForm as GravityFormsFormType, FormField, FieldError } from "../generated/graphql";
 import useGravityForm from "../hooks/useGravityForm";
 import GravityFormsField from "./GravityFormsField";
 
@@ -11,6 +11,10 @@ const SUBMIT_FORM = gql`
       fieldValues: $fieldValues
     }) {
       entryId
+      errors {
+        id
+        message
+      }
     }
   }
 `;
@@ -21,12 +25,16 @@ interface Props {
 
 export default function GravityFormsForm({ form }: Props) {
   const [submitForm, { data, loading, error }] = useMutation(SUBMIT_FORM);
-  const wasSuccessfullySubmitted = Boolean(data?.submitGravityFormsForm);
+  const haveEntryId = Boolean(data?.submitGravityFormsForm?.entryId);
+  const haveFieldErrors = Boolean(data?.submitGravityFormsForm?.errors?.length);
+  const wasSuccessfullySubmitted = haveEntryId && !haveFieldErrors;
   const defaultConfirmation = form.confirmations?.find(confirmation => confirmation?.isDefault);
-  const formFields = form.fields?.nodes || [];
+  const formFields = form.formFields?.nodes || [];
   const { state } = useGravityForm();
 
+  console.log({ form });
   console.log({ state });
+  console.log({ data, loading, error });
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -37,7 +45,14 @@ export default function GravityFormsForm({ form }: Props) {
         formId: form.formId,
         fieldValues: state,
       }
-    });
+    }).catch(error => {
+      console.error(error);
+    })
+  }
+
+  function getFieldErrors(id: number): FieldError[] {
+    if (!haveFieldErrors) return [];
+    return data.submitGravityFormsForm.errors.filter((error: FieldError) => error.id === id);
   }
 
   if (wasSuccessfullySubmitted) {
@@ -47,10 +62,14 @@ export default function GravityFormsForm({ form }: Props) {
   return (
     <form method="post" onSubmit={handleSubmit}>
       {formFields.map(field =>
-        <GravityFormsField key={field?.id} field={field as FormField} />
+        <GravityFormsField
+          key={field?.id}
+          field={field as FormField}
+          fieldErrors={getFieldErrors(Number(field?.id))}
+        />
       )}
       {error ? (
-        <p style={{ color: 'red' }}>{error.message}</p>
+        <p className="error-message">{error.message}</p>
       ) : null}
       <button type="submit" disabled={loading}>
         {form?.button?.text || 'Submit'}

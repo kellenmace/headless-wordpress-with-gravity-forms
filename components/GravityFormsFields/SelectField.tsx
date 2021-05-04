@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-import { SelectField as SelectFieldType } from "../../generated/graphql";
+import { SelectField as SelectFieldType, FieldError } from "../../generated/graphql";
 import useGravityForm, { ACTION_TYPES, StringFieldValue } from "../../hooks/useGravityForm";
 
 export const SELECT_FIELD_FIELDS = gql`
@@ -20,9 +20,10 @@ export const SELECT_FIELD_FIELDS = gql`
 
 interface Props {
   field: SelectFieldType;
+  fieldErrors: FieldError[];
 }
 
-export default function SelectField({ field }: Props) {
+export default function SelectField({ field, fieldErrors }: Props) {
   const { id, formId, type, label, isRequired, cssClass, defaultValue, choices } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
@@ -51,6 +52,9 @@ export default function SelectField({ field }: Props) {
           <option key={choice?.value || ''} value={choice?.value || ''}>{choice?.text || ''}</option>
         )}
       </select>
+      {fieldErrors?.length ? fieldErrors.map(fieldError => (
+        <p key={fieldError.id} className="error-message">{fieldError.message}</p>
+      )) : null}
     </div>
   );
 }

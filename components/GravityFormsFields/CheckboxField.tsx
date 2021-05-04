@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-import { CheckboxField as CheckboxFieldType } from "../../generated/graphql";
+import { CheckboxField as CheckboxFieldType, FieldError } from "../../generated/graphql";
 import useGravityForm, { ACTION_TYPES, CheckboxFieldValue, SingleCheckboxValue } from "../../hooks/useGravityForm";
 
 export const CHECKBOX_FIELD_FIELDS = gql`
@@ -21,11 +21,12 @@ export const CHECKBOX_FIELD_FIELDS = gql`
 
 interface Props {
   field: CheckboxFieldType;
+  fieldErrors: FieldError[];
 }
 
 const DEFAULT_VALUE: SingleCheckboxValue[] = [];
 
-export default function CheckboxField({ field }: Props) {
+export default function CheckboxField({ field, fieldErrors }: Props) {
   const { id, formId, type, label, cssClass, inputs, choices } = field;
   const checkboxInputs = choices?.map((choice, index) => ({ ...choice, id: inputs?.[index]?.id })) || [];
   const htmlId = `field_${formId}_${id}`;
@@ -67,6 +68,9 @@ export default function CheckboxField({ field }: Props) {
           <label htmlFor={`input_${formId}_${id}_${inputId}`}>{text}</label>
         </div>
       )}
+      {fieldErrors?.length ? fieldErrors.map(fieldError => (
+        <p key={fieldError.id} className="error-message">{fieldError.message}</p>
+      )) : null}
     </fieldset>
   );
 }

@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-import { NameField as NameFieldType } from "../../generated/graphql";
+import { NameField as NameFieldType, FieldError } from "../../generated/graphql";
 import useGravityForm, { ACTION_TYPES, NameFieldValue, NameValues } from "../../hooks/useGravityForm";
 
 export const NAME_FIELD_FIELDS = gql`
@@ -19,6 +19,7 @@ export const NAME_FIELD_FIELDS = gql`
 
 interface Props {
   field: NameFieldType;
+  fieldErrors: FieldError[];
 }
 
 const DEFAULT_VALUE: NameValues = {};
@@ -31,7 +32,7 @@ const AUTOCOMPLETE_ATTRIBUTES: { [key: string]: string } = {
   suffix: 'honorific-suffix',
 };
 
-export default function NameField({ field }: Props) {
+export default function NameField({ field, fieldErrors }: Props) {
   const { id, formId, type, label, cssClass, inputs } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
@@ -99,6 +100,9 @@ export default function NameField({ field }: Props) {
         );
       }
       )}
+      {fieldErrors?.length ? fieldErrors.map(fieldError => (
+        <p key={fieldError.id} className="error-message">{fieldError.message}</p>
+      )) : null}
     </fieldset>
   );
 }

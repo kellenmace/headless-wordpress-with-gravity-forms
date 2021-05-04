@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import React from "react";
 
-import { AddressField as AddressFieldType } from "../../generated/graphql";
+import { AddressField as AddressFieldType, FieldError } from "../../generated/graphql";
 import useGravityForm, { ACTION_TYPES, AddressFieldValue, AddressValues } from "../../hooks/useGravityForm";
 
 export const ADDRESS_FIELD_FIELDS = gql`
@@ -20,6 +20,7 @@ export const ADDRESS_FIELD_FIELDS = gql`
 
 interface Props {
   field: AddressFieldType;
+  fieldErrors: FieldError[];
 }
 
 const DEFAULT_VALUE: AddressValues = {};
@@ -32,7 +33,7 @@ const AUTOCOMPLETE_ATTRIBUTES: { [key: string]: string } = {
   country: 'country-name',
 };
 
-export default function AddressField({ field }: Props) {
+export default function AddressField({ field, fieldErrors }: Props) {
   const { id, formId, type, label, cssClass, inputs } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
@@ -75,6 +76,9 @@ export default function AddressField({ field }: Props) {
         );
       }
       )}
+      {fieldErrors?.length ? fieldErrors.map(fieldError => (
+        <p key={fieldError.id} className="error-message">{fieldError.message}</p>
+      )) : null}
     </fieldset>
   );
 }

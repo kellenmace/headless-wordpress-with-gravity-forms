@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-import { WebsiteField as WebsiteFieldType } from "../../generated/graphql";
+import { WebsiteField as WebsiteFieldType, FieldError } from "../../generated/graphql";
 import useGravityForm, { ACTION_TYPES, StringFieldValue } from "../../hooks/useGravityForm";
 
 export const WEBSITE_FIELD_FIELDS = gql`
@@ -16,11 +16,12 @@ export const WEBSITE_FIELD_FIELDS = gql`
 
 interface Props {
   field: WebsiteFieldType;
+  fieldErrors: FieldError[];
 }
 
 const DEFAULT_VALUE = '';
 
-export default function WebsiteField({ field }: Props) {
+export default function WebsiteField({ field, fieldErrors }: Props) {
   const { id, formId, type, label, cssClass, isRequired, placeholder } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
@@ -47,6 +48,9 @@ export default function WebsiteField({ field }: Props) {
           })
         }}
       />
+      {fieldErrors?.length ? fieldErrors.map(fieldError => (
+        <p key={fieldError.id} className="error-message">{fieldError.message}</p>
+      )) : null}
     </div>
   );
 }

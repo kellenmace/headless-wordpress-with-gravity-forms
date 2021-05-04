@@ -28,7 +28,7 @@ const GET_FORM = gql`
         isDefault
         message
       }
-      fields(first: 500) {
+      formFields(first: 500) {
         nodes {
           id
           type

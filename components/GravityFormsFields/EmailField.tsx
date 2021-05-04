@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-import { EmailField as EmailFieldType } from "../../generated/graphql";
+import { EmailField as EmailFieldType, FieldError } from "../../generated/graphql";
 import useGravityForm, { ACTION_TYPES, EmailFieldValue } from "../../hooks/useGravityForm";
 
 export const EMAIL_FIELD_FIELDS = gql`
@@ -16,11 +16,12 @@ export const EMAIL_FIELD_FIELDS = gql`
 
 interface Props {
   field: EmailFieldType;
+  fieldErrors: FieldError[];
 }
 
 const DEFAULT_VALUE = '';
 
-export default function EmailField({ field }: Props) {
+export default function EmailField({ field, fieldErrors }: Props) {
   const { id, formId, type, label, cssClass, isRequired, placeholder } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
@@ -49,6 +50,9 @@ export default function EmailField({ field }: Props) {
           })
         }}
       />
+      {fieldErrors?.length ? fieldErrors.map(fieldError => (
+        <p key={fieldError.id} className="error-message">{fieldError.message}</p>
+      )) : null}
     </div>
   );
 }

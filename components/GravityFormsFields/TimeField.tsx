@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-import { TimeField as TimeFieldType } from "../../generated/graphql";
+import { TimeField as TimeFieldType, FieldError } from "../../generated/graphql";
 import useGravityForm, { ACTION_TYPES, StringFieldValue } from "../../hooks/useGravityForm";
 
 export const TIME_FIELD_FIELDS = gql`
@@ -15,11 +15,12 @@ export const TIME_FIELD_FIELDS = gql`
 
 interface Props {
   field: TimeFieldType;
+  fieldErrors: FieldError[];
 }
 
 const DEFAULT_VALUE = '';
 
-export default function TimeField({ field }: Props) {
+export default function TimeField({ field, fieldErrors }: Props) {
   const { id, formId, type, label, cssClass, isRequired } = field;
   const htmlId = `field_${formId}_${id}`;
   const { state, dispatch } = useGravityForm();
@@ -45,6 +46,9 @@ export default function TimeField({ field }: Props) {
           })
         }}
       />
+      {fieldErrors?.length ? fieldErrors.map(fieldError => (
+        <p key={fieldError.id} className="error-message">{fieldError.message}</p>
+      )) : null}
     </div>
   );
 }
