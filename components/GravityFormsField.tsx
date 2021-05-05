@@ -18,7 +18,7 @@ interface Props {
   fieldErrors: FieldError[];
 }
 
-export default function Field({ field, fieldErrors }: Props) {
+export default function GravityFormsField({ field, fieldErrors }: Props) {
   switch (field.type) {
     case "address":
       return <AddressField field={field} fieldErrors={fieldErrors} />;
